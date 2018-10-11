@@ -95,7 +95,7 @@ namespace Apache.OpenWhisk.Runtime.Common
                 {
                     System.IO.Compression.ZipFile.ExtractToDirectory(tempFile, tempPath);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     await httpContext.Response.WriteError("Unable to decompress package.");
                     return (null);

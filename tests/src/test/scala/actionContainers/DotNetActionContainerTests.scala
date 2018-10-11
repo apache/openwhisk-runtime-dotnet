@@ -147,8 +147,6 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
       val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.FakeType::Main"))
       initCode should be(502)
 
-      initRes shouldBe defined
-
       initRes should {
           be(Some(JsObject("error" -> JsString("Unable to locate requested type (\"Apache.OpenWhisk.Tests.Dotnet.FakeType\")."))))
       }
@@ -159,8 +157,6 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
     val (out, err) = withActionContainer() { c =>
       val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo::FakeMethod"))
       initCode should be(502)
-
-      initRes shouldBe defined
 
       initRes should {
           be(Some(JsObject("error" -> JsString("Unable to locate requested method (\"FakeMethod\")."))))
@@ -173,8 +169,6 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
       val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.NonEmptyConstructor::Main"))
       initCode should be(502)
 
-      initRes shouldBe defined
-
       initRes should {
           be(Some(JsObject("error" -> JsString("Unable to locate appropriate constructor for (\"Apache.OpenWhisk.Tests.Dotnet.NonEmptyConstructor\")."))))
       }
@@ -186,8 +180,6 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
       val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet"))
       initCode should not be (200)
 
-      initRes shouldBe defined
-
       initRes should {
           be(Some(JsObject("error" -> JsString("main required format is \"Assembly::Type::Function\"."))))
       }
@@ -198,8 +190,6 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
     val (out, err) = withActionContainer() { c =>
       val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo"))
       initCode should not be (200)
-
-      initRes shouldBe defined
 
       initRes should {
           be(Some(JsObject("error" -> JsString("main required format is \"Assembly::Type::Function\"."))))
