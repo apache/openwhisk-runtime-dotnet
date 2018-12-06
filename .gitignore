@@ -1,0 +1,8 @@
+.vscode
+.idea
+*.iml
+*~
+
+.gradle/
+tests/build
+tests/out/
