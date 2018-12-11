@@ -27,6 +27,10 @@ notifications:
       # travis2slack webhook to enable DMs on openwhisk-team.slack.com to PR authors with TravisCI results
       secure: y6caEKjRnby723P1W8Rup+yioJRBV1YmqwGEEgPxNu9YGdef0m7TO8fp1BZaa/hHErYzYrfvOo3gwXBB7lkmZ9p1NfF/Cb5bjy5UwSx+EFaEjugFIoCCg+xPPTS4SM24+bXljiFZd7ZZGXu4beGdcgxmYsufRQoWJBF4Itcr424wEw+fSrPPknAotgAXjUyOOmr/xHng50mFqyfal1miR9vOiX1y/cdeAmaCmuagv20ry0ZpnOyMYCdH0LtWIDAxSDn/GTXBAwLBy2Wn05uE+Yqh6EI7xRvYBtT0PfaBFwb28pmkArYG9ZpXB8cwUhuLQZ51zFt0uHMetzlThbw6pO0X9FzGcT/BBlUaZbUaY6zar8FkRzija72HLKOY/yAN8VkhGlDOz2RSI3Tw05vep4Y7ZVRF9/wW0KnKB68VMJuwCbzgtCvWpgRXbxxLcKvKYsBVnkcWY/fwMxG5q8gQ2ZELf65975MVMn/oejwAcJkP2EOBBFpHGsWvEwNV4ymTD00XX1qeebfYQYTsxUOEUFrvu3p4GgqI2MQksgWusGaHaOTG0XHZ7afbZ+4EdPA098rPFaIcnq5E8PVZ+IRzn+5aupAqXy/tY0i4V1U7H4rtF+6u3PJpAIcgVo03wmzNcnsw0rVcAqKbIxn/oyMaIaGtb1VaKYQZJ4t4CCo0cEo=
 before_install:
+- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+- sudo apt-get update
+- sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
 - "./tools/travis/setup.sh"
 install: true
 script:
