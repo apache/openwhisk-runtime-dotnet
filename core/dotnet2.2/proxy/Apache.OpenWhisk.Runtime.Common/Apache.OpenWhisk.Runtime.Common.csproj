@@ -1,4 +1,4 @@
-/*
+<!--
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -13,16 +13,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+-->
+<Project Sdk="Microsoft.NET.Sdk">
 
-plugins {
-  id "net.karlmartens.dotnet" version "0.2.18"
-}
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
 
-repositories {
-    mavenCentral()
-}
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore">
+        <Version>2.2.0</Version>
+      </PackageReference>
+      <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel">
+        <Version>2.2.0</Version>
+      </PackageReference>
+      <PackageReference Include="Newtonsoft.Json">
+        <Version>12.0.1</Version>
+      </PackageReference>
+    </ItemGroup>
 
-dotnet {
-  configuration 'Release'
-}
+</Project>

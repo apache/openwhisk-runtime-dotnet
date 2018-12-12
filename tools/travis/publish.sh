@@ -27,7 +27,7 @@ WHISKDIR="$ROOTDIR/../openwhisk"
 export OPENWHISK_HOME=$WHISKDIR
 
 IMAGE_PREFIX=$1
-RUNTIME_VERSION=$2
+RUNTIME=$2
 IMAGE_TAG=$3
 
 if [[ ! -z ${DOCKER_USER} ]] && [[ ! -z ${DOCKER_PASSWORD} ]]; then
@@ -36,7 +36,7 @@ fi
 
 if [[ ! -z ${RUNTIME} ]]; then
 TERM=dumb ./gradlew \
-:core:${RUNTIME}:distDocker \
+:core:dotnet${RUNTIME}:distDocker \
 -PdockerRegistry=docker.io \
 -PdockerImagePrefix=${IMAGE_PREFIX} \
 -PdockerImageTag=${IMAGE_TAG}
@@ -45,7 +45,7 @@ TERM=dumb ./gradlew \
   if [ ${IMAGE_TAG} == "latest" ]; then
   SHORT_COMMIT=`git rev-parse --short HEAD`
   TERM=dumb ./gradlew \
-  :core:${RUNTIME}:distDocker \
+  :core:dotnet${RUNTIME}:distDocker \
   -PdockerRegistry=docker.io \
   -PdockerImagePrefix=${IMAGE_PREFIX} \
   -PdockerImageTag=${SHORT_COMMIT}

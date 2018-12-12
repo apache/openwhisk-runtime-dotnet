@@ -18,8 +18,8 @@
 include ':tests'
 include ':tests:dotnet'
 
-include ':core:dotnet2.1'
-include ':core:dotnet2.1:proxy'
+include ':core:dotnet2.2'
+include ':core:dotnet2.2:proxy'
 
 rootProject.name = 'runtime-dotnet'
 

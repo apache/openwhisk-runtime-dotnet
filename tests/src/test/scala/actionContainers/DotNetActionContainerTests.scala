@@ -30,7 +30,7 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   // Helpers specific to java actions
   override def withActionContainer(env: Map[String, String] = Map.empty)(
-    code: ActionContainer => Unit): (String, String) = withContainer("action-dotnet-v2.1", env)(code)
+    code: ActionContainer => Unit): (String, String) = withContainer("action-dotnet-v2.2", env)(code)
 
   behavior of "dotnet action"
 
