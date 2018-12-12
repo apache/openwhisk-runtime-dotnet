@@ -31,13 +31,6 @@ export OPENWHISK_HOME=$WHISKDIR
 cd $UTILDIR
 scancode/scanCode.py --config scancode/ASF-Release.cfg $ROOTDIR
 
-# Build OpenWhisk deps before we run tests
-cd $WHISKDIR
-TERM=dumb ./gradlew install
-# Mock file (works around bug upstream)
-echo "openwhisk.home=$WHISKDIR" > whisk.properties
-echo "vcap.services.file=" >> whisk.properties
-
 # Upgrade docker version
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
@@ -52,6 +45,13 @@ sudo dpkg -i packages-microsoft-prod.deb
 sudo apt-get install -y apt-transport-https
 sudo apt-get -y update -qq
 sudo apt-get install -y dotnet-sdk-2.2
+
+# Build OpenWhisk deps before we run tests
+cd $WHISKDIR
+TERM=dumb ./gradlew install
+# Mock file (works around bug upstream)
+echo "openwhisk.home=$WHISKDIR" > whisk.properties
+echo "vcap.services.file=" >> whisk.properties
 
 # Build runtime and dependencies
 cd $ROOTDIR
