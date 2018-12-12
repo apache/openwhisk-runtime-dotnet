@@ -29,6 +29,7 @@ export OPENWHISK_HOME=$WHISKDIR
 IMAGE_PREFIX=$1
 RUNTIME_VERSION=$2
 IMAGE_TAG=$3
+RUNTIME="action-dotnet-v${RUNTIME_VERSION}"
 
 if [[ ! -z ${DOCKER_USER} ]] && [[ ! -z ${DOCKER_PASSWORD} ]]; then
 docker login -u "${DOCKER_USER}" -p "${DOCKER_PASSWORD}"
