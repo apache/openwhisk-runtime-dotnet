@@ -10,3 +10,8 @@ tests/out/
 tests/bin/
 .project
 .classpath
+
+obj/
+bin/
+*.zip
+
