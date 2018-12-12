@@ -44,31 +44,19 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
   }
 
   override val testEnv = {
-    TestConfig(
-      functionb64,
-      main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Environment::Main"
-    )
+    TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Environment::Main")
   }
 
   override val testEcho = {
-    TestConfig(
-      functionb64,
-      main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.AltEcho::Main"
-    )
+    TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.AltEcho::Main")
   }
 
   val testEchoNoWrite = {
-    TestConfig(
-      functionb64,
-      main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo::Main"
-    )
+    TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo::Main")
   }
 
   override val testUnicode = {
-    TestConfig(
-      functionb64,
-      main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Unicode::Main"
-    )
+    TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Unicode::Main")
   }
 
   override val testInitCannotBeCalledMoreThanOnce = testEchoNoWrite
@@ -81,20 +69,22 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
     val (out, err) = withActionContainer() { c =>
       val brokenArchive = ("NOTAVALIDZIPFILE")
 
-      val (initCode, initRes) = c.init(initPayload(brokenArchive, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Invalid::Main"))
+      val (initCode, initRes) =
+        c.init(initPayload(brokenArchive, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Invalid::Main"))
       initCode should not be (200)
 
       initRes shouldBe defined
 
       initRes should {
-          be(Some(JsObject("error" -> JsString("Unable to decompress package."))))
+        be(Some(JsObject("error" -> JsString("Unable to decompress package."))))
       }
     }
   }
 
   it should "return some error on action error" in {
     val (out, err) = withActionContainer() { c =>
-      val (initCode, _) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Exception::Main"))
+      val (initCode, _) =
+        c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Exception::Main"))
       initCode should be(200)
 
       val (runCode, runRes) = c.run(runPayload(JsObject.empty))
@@ -112,7 +102,8 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   it should "support application errors" in {
     val (out, err) = withActionContainer() { c =>
-      val (initCode, _) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Error::Main"))
+      val (initCode, _) =
+        c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Error::Main"))
       initCode should be(200)
 
       val (runCode, runRes) = c.run(runPayload(JsObject.empty))
@@ -131,46 +122,58 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
 
   it should "fails on invalid assembly reference" in {
     val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet.DoesntExist::Apache.OpenWhisk.Tests.Dotnet.Echo::Main"))
+      val (initCode, initRes) = c.init(
+        initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet.DoesntExist::Apache.OpenWhisk.Tests.Dotnet.Echo::Main"))
       initCode should be(502)
 
       initRes shouldBe defined
 
       initRes should {
-          be(Some(JsObject("error" -> JsString("Unable to locate requested assembly (\"Apache.OpenWhisk.Tests.Dotnet.DoesntExist.dll\")."))))
+        be(
+          Some(JsObject("error" -> JsString(
+            "Unable to locate requested assembly (\"Apache.OpenWhisk.Tests.Dotnet.DoesntExist.dll\")."))))
       }
     }
   }
 
   it should "fails on invalid type reference" in {
     val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.FakeType::Main"))
+      val (initCode, initRes) =
+        c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.FakeType::Main"))
       initCode should be(502)
 
       initRes should {
-          be(Some(JsObject("error" -> JsString("Unable to locate requested type (\"Apache.OpenWhisk.Tests.Dotnet.FakeType\")."))))
+        be(
+          Some(JsObject(
+            "error" -> JsString("Unable to locate requested type (\"Apache.OpenWhisk.Tests.Dotnet.FakeType\")."))))
       }
     }
   }
 
   it should "fails on invalid method reference" in {
     val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo::FakeMethod"))
+      val (initCode, initRes) = c.init(
+        initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo::FakeMethod"))
       initCode should be(502)
 
       initRes should {
-          be(Some(JsObject("error" -> JsString("Unable to locate requested method (\"FakeMethod\")."))))
+        be(Some(JsObject("error" -> JsString("Unable to locate requested method (\"FakeMethod\")."))))
       }
     }
   }
 
   it should "fails on type with no empty constructor" in {
     val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.NonEmptyConstructor::Main"))
+      val (initCode, initRes) = c.init(
+        initPayload(
+          functionb64,
+          "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.NonEmptyConstructor::Main"))
       initCode should be(502)
 
       initRes should {
-          be(Some(JsObject("error" -> JsString("Unable to locate appropriate constructor for (\"Apache.OpenWhisk.Tests.Dotnet.NonEmptyConstructor\")."))))
+        be(
+          Some(JsObject("error" -> JsString(
+            "Unable to locate appropriate constructor for (\"Apache.OpenWhisk.Tests.Dotnet.NonEmptyConstructor\")."))))
       }
     }
   }
@@ -181,25 +184,27 @@ class DotNetActionContainerTests extends BasicActionRunnerTests with WskActorSys
       initCode should not be (200)
 
       initRes should {
-          be(Some(JsObject("error" -> JsString("main required format is \"Assembly::Type::Function\"."))))
+        be(Some(JsObject("error" -> JsString("main required format is \"Assembly::Type::Function\"."))))
       }
     }
   }
 
   it should "validate main string format 2" in {
     val (out, err) = withActionContainer() { c =>
-      val (initCode, initRes) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo"))
+      val (initCode, initRes) =
+        c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo"))
       initCode should not be (200)
 
       initRes should {
-          be(Some(JsObject("error" -> JsString("main required format is \"Assembly::Type::Function\"."))))
+        be(Some(JsObject("error" -> JsString("main required format is \"Assembly::Type::Function\"."))))
       }
     }
   }
 
   it should "enforce that the user returns an object" in {
     val (out, err) = withActionContainer() { c =>
-      val (initCode, _) = c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Nuller::Main"))
+      val (initCode, _) =
+        c.init(initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Nuller::Main"))
       initCode should be(200)
 
       val (runCode, runRes) = c.run(runPayload(JsObject.empty))
