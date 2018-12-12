@@ -43,6 +43,9 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 docker version
 
+# Upgrade dpkg avoid problems installing dotnet 2.2
+# https://github.com/travis-ci/travis-ci/issues/9361#issuecomment-408431262
+sudo apt-get install -y dpkg
 # Install dotnet
 wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
