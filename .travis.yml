@@ -17,8 +17,9 @@
 
 sudo: required
 group: deprecated-2017Q3
-language: csharp
-dotnet: "2.2.101-1"
+language: scala
+scala:
+   - 2.12.7
 services:
 - docker
 notifications:

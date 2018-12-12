@@ -43,6 +43,13 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 docker version
 
+# Install dotnet
+wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+sudo apt-get install -y apt-transport-https
+sudo apt-get -y update -qq
+sudo apt-get install -y dotnet-sdk-2.2
+
 # Build runtime and dependencies
 cd $ROOTDIR
 
