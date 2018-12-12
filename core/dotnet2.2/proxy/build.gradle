@@ -16,7 +16,7 @@
  */
 
 plugins {
-  id "net.karlmartens.dotnet" version "0.2.18"
+  id "net.karlmartens.dotnet" version "0.2.20"
 }
 
 repositories {
