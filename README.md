@@ -22,7 +22,7 @@
 [![Build Status](https://travis-ci.org/apache/incubator-openwhisk-runtime-dotnet.svg?branch=master)](https://travis-ci.org/apache/incubator-openwhisk-runtime-dotnet)
 
 ## Changelogs
-- [.NET Core 2.1 CHANGELOG.md](core/dotnet2.1/CHANGELOG.md)
+- [.NET Core 2.2 CHANGELOG.md](core/dotnet2.2/CHANGELOG.md)
 
 
 ## Quick .NET Core Action
@@ -44,7 +44,7 @@ cd Apache.OpenWhisk.Example.Dotnet
 Install the [Newtonsoft.Json](https://www.newtonsoft.com/json) NuGet package as follows:
 
 ```bash
-dotnet add package Newtonsoft.Json -v 11.0.2
+dotnet add package Newtonsoft.Json -v 12.0.1
 ```
 
 Now create a file called `Hello.cs` with the following content:
@@ -92,7 +92,7 @@ The value for `main` needs to be in the following format:
 ### Create the .NET Core Action
 To use on a deployment of OpenWhisk that contains the runtime as a kind:
 ```bash
-wsk action update helloDotNet helloDotNet.bin --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:2.1
+wsk action update helloDotNet helloDotNet.bin --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:2.2
 ```
 
 ### Invoke the .NET Core Action
@@ -110,17 +110,17 @@ wsk action invoke --result helloDotNet --param name World
 
 ## Local development
 ```bash
-./gradlew core:dotnet2.1:distDocker
+./gradlew core:dotnet2.2:distDocker
 ```
-This will produce the image `whisk/action-dotnet-v2.1`
+This will produce the image `whisk/action-dotnet-v2.2`
 
 Build and Push image
 ```bash
 docker login
-./gradlew core:action-dotnet-v2.1:distDocker -PdockerImagePrefix=$prefix-user -PdockerRegistry=docker.io
+./gradlew core:action-dotnet-v2.2:distDocker -PdockerImagePrefix=$prefix-user -PdockerRegistry=docker.io
 ```
 
-Deploy OpenWhisk using ansible environment that contains the kind `dotnet:2.1`
+Deploy OpenWhisk using ansible environment that contains the kind `dotnet:2.2`
 Assuming you have OpenWhisk already deploy localy and `OPENWHISK_HOME` pointing to root directory of OpenWhisk core repository.
 
 Set `ROOTDIR` to the root directory of this repository.
@@ -165,12 +165,12 @@ Using IntelliJ:
 #### Using container image to test
 To use as docker action push to your own dockerhub account
 ```bash
-docker tag whisk/action-dotnet-v2.1 $user_prefix/action-dotnet-v2.1
-docker push $user_prefix/action-dotnet-v2.1
+docker tag whisk/action-dotnet-v2.2 $user_prefix/action-dotnet-v2.2
+docker push $user_prefix/action-dotnet-v2.2
 ```
 Then create the action using your the image from dockerhub
 ```bash
-wsk action update helloDotNet helloDotNet.bin --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --docker $user_prefix/action-dotnet-v2.1
+wsk action update helloDotNet helloDotNet.bin --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --docker $user_prefix/action-dotnet-v2.2
 ```
 The `$user_prefix` is usually your dockerhub user id.
 

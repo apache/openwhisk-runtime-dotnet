@@ -18,7 +18,7 @@
 sudo: required
 group: deprecated-2017Q3
 language: csharp
-dotnet: 2.1.300
+dotnet: 2.2.0
 services:
 - docker
 notifications:
@@ -40,7 +40,7 @@ deploy:
     all_branches: true
     repo: apache/incubator-openwhisk-runtime-dotnet
 - provider: script
-  script: "./tools/travis/publish.sh openwhisk 2.1 latest"
+  script: "./tools/travis/publish.sh openwhisk 2.2 latest"
   on:
     branch: master
     repo: apache/incubator-openwhisk-runtime-dotnet
