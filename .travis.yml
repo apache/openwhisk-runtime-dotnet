@@ -18,7 +18,7 @@
 sudo: required
 group: deprecated-2017Q3
 language: csharp
-dotnet: 2.2.0
+dotnet: 2.2.101
 services:
 - docker
 notifications:
