@@ -26,8 +26,8 @@ HOMEDIR="$SCRIPTDIR/../../../"
 
 # clone OpenWhisk utilities repo. in order to run scanCode
 cd $HOMEDIR
-git clone --depth=1 https://github.com/apache/incubator-openwhisk-utilities.git
+git clone --depth=1 https://github.com/apache/openwhisk-utilities.git
 
 # clone main openwhisk repo. for testing purposes
-git clone --depth=1 https://github.com/apache/incubator-openwhisk.git openwhisk
+git clone --depth=1 https://github.com/apache/openwhisk.git openwhisk
 

@@ -19,7 +19,7 @@
 
 # Apache OpenWhisk runtimes for .NET Core
 
-[![Build Status](https://travis-ci.org/apache/incubator-openwhisk-runtime-dotnet.svg?branch=master)](https://travis-ci.org/apache/incubator-openwhisk-runtime-dotnet)
+[![Build Status](https://travis-ci.org/apache/openwhisk-runtime-dotnet.svg?branch=master)](https://travis-ci.org/apache/openwhisk-runtime-dotnet)
 
 ## Changelogs
 - [.NET Core 2.2 CHANGELOG.md](core/dotnet2.2/CHANGELOG.md)
@@ -176,7 +176,3 @@ The `$user_prefix` is usually your dockerhub user id.
 
 # License
 [Apache 2.0](LICENSE.txt)
-
-# Disclaimer
-
-Apache OpenWhisk Runtime Dotnet is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
