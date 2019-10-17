@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -15,27 +15,30 @@
  * limitations under the License.
  */
 
-include ':tests'
-include ':tests:dotnet'
+using System;
+using Apache.OpenWhisk.Runtime.Common;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
-include ':core:dotnet2.2'
-include ':core:dotnet2.2:proxy'
+namespace Apache.OpenWhisk.Runtime.Dotnet.Minimal
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            CreateWebHostBuilder(args).Build().Run();
+        }
+        
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.ClearProviders();
+                })
+		.SuppressStatusMessages(true)
+                .UseStartup<Startup>();
 
-include ':core:dotnet3.0'
-include ':core:dotnet3.0:proxy'
+    }
+}
 
-rootProject.name = 'runtime-dotnet'
-
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
-
-gradle.ext.scala = [
-    version: '2.11.11',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
-
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
