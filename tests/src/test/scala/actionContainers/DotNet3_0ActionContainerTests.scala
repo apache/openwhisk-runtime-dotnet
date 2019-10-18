@@ -26,7 +26,7 @@ import java.nio.file.Paths
 
 @RunWith(classOf[JUnitRunner])
 class DotNet3_0ActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
-  val functionb64 = ResourceHelpers.readAsBase64(Paths.get(getClass.getResource("/dotnettests.zip").getPath))
+  val functionb64 = ResourceHelpers.readAsBase64(Paths.get(getClass.getResource("/dotnettests3.0.zip").getPath))
 
   // Helpers specific to java actions
   override def withActionContainer(env: Map[String, String] = Map.empty)(
@@ -110,7 +110,11 @@ class DotNet3_0ActionContainerTests extends BasicActionRunnerTests with WskActor
       runCode should be(200)
 
       runRes shouldBe defined
-      runRes.get.fields.get("error") shouldBe defined
+      
+      runRes should {
+        be(
+          Some(JsObject("error" -> JsString(".NETCoreApp,Version=v3.0"))))
+      }
     }
 
     checkStreams(out, err, {

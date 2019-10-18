@@ -17,12 +17,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Apache.OpenWhisk.Runtime.Common\Apache.OpenWhisk.Runtime.Common.csproj" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\..\dotnetshared\*.cs">
+      </Compile>
     </ItemGroup>
     
 </Project>

@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-FROM microsoft/dotnet:2.2-sdk-alpine AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-alpine AS build
 
 WORKDIR /app
 COPY proxy/Apache.OpenWhisk.Runtime.Common/*.csproj ./Apache.OpenWhisk.Runtime.Common/
@@ -26,9 +26,9 @@ RUN dotnet restore
 COPY proxy/Apache.OpenWhisk.Runtime.Common/. ./Apache.OpenWhisk.Runtime.Common/
 COPY proxy/Apache.OpenWhisk.Runtime.Dotnet.Minimal/. ./Apache.OpenWhisk.Runtime.Dotnet.Minimal/
 WORKDIR /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal
-RUN dotnet publish -c Release -r alpine.3.7-x64 -o out
+RUN dotnet publish -c Release -r alpine.3.9-x64 -o out
 
-FROM microsoft/dotnet:2.2-runtime-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine AS runtime
 WORKDIR /app
 COPY --from=build /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal/out ./
 ENV ASPNETCORE_URLS http://+:8080

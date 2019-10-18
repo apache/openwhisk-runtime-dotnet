@@ -16,6 +16,8 @@
  */
 
 using Newtonsoft.Json.Linq;
+using System.Runtime.Versioning;
+using System.Reflection;
 
 namespace Apache.OpenWhisk.Tests.Dotnet
 {
@@ -24,7 +26,12 @@ namespace Apache.OpenWhisk.Tests.Dotnet
         public JObject Main(JObject args)
         {
             JObject message = new JObject();
-            message.Add("error", new JValue("This action is unhappy."));
+            var framework = Assembly
+                .GetEntryAssembly()?
+                .GetCustomAttribute<TargetFrameworkAttribute>()?
+                .FrameworkName;
+
+            message.Add("error", new JValue(framework));
             return (message);
         }
     }

@@ -16,7 +16,8 @@
  */
 
 include ':tests'
-include ':tests:dotnet'
+include ':tests:dotnet2.2'
+include ':tests:dotnet3.0'
 
 include ':core:dotnet2.2'
 include ':core:dotnet2.2:proxy'
