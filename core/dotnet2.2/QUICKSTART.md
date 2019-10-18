@@ -37,7 +37,7 @@ cd Apache.OpenWhisk.Example.Dotnet
 Install the [Newtonsoft.Json](https://www.newtonsoft.com/json) NuGet package as follows:
 
 ```bash
-dotnet add package Newtonsoft.Json -v 12.0.1
+dotnet add package Newtonsoft.Json -v 12.0.2
 ```
 
 Now create a file called `Hello.cs` with the following content:
