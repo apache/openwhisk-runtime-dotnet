@@ -112,8 +112,7 @@ class DotNet2_2ActionContainerTests extends BasicActionRunnerTests with WskActor
       runRes shouldBe defined
 
       runRes should {
-        be(
-          Some(JsObject("error" -> JsString(".NETCoreApp,Version=v2.2"))))
+        be(Some(JsObject("error" -> JsString(".NETCoreApp,Version=v2.2"))))
       }
     }
 

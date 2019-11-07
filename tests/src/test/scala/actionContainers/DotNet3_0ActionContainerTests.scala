@@ -112,8 +112,7 @@ class DotNet3_0ActionContainerTests extends BasicActionRunnerTests with WskActor
       runRes shouldBe defined
 
       runRes should {
-        be(
-          Some(JsObject("error" -> JsString(".NETCoreApp,Version=v3.0"))))
+        be(Some(JsObject("error" -> JsString(".NETCoreApp,Version=v3.0"))))
       }
     }
 
