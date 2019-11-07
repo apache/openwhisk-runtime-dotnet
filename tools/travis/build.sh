@@ -40,7 +40,7 @@ docker version
 # https://github.com/travis-ci/travis-ci/issues/9361#issuecomment-408431262
 sudo apt-get install -y --force-yes -q -qq dpkg
 # Install dotnet
-wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
+wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 sudo apt-get install -y apt-transport-https
 sudo apt-get -y update -qq
