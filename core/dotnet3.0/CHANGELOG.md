@@ -20,6 +20,6 @@
 # .NET Core 3.0 OpenWhisk Runtime Container
 
 
-## 1.13 (next Apache release)
+## 1.14 (next Apache release)
 Changes:
 - Initial release
