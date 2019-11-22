@@ -14,35 +14,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-apply plugin: 'scala'
-apply plugin: 'eclipse'
-compileTestScala.options.encoding = 'UTF-8'
+
+plugins {
+  id "net.karlmartens.dotnet" version "0.2.20"
+}
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
 
-tasks.withType(Test) {
-    testLogging {
-        events "passed", "skipped", "failed"
-        showStandardStreams = true
-        exceptionFormat = 'full'
+dotnet {
+  configuration 'Release'
+}
+
+task prepare_distro(dependsOn: distribution) {
+  doLast {
+    copy {
+      from tarTree(resources.gzip(file('build/dist/netstandard2.1.tar.gz')))
+      into file('build/dist/out')
     }
-    outputs.upToDateWhen { false } // force tests to run every time
+    delete file('build/dist/netstandard2.1.tar.gz')
+  }
 }
 
-dependencies {
-    compile "org.scala-lang:scala-library:${gradle.scala.version}"
-    compile "org.apache.openwhisk:openwhisk-tests:${gradle.openwhisk.version}:tests"
-    compile "org.apache.openwhisk:openwhisk-tests:${gradle.openwhisk.version}:test-sources"
+task prepare_zip(type: Zip, dependsOn: prepare_distro) {
+  from file('build/dist/out')
+  include '*'
+  include '**/**'
+  archiveName 'dotnettests3.0.zip'
+  destinationDir(file('../src/test/resources'))
 }
 
-tasks.withType(ScalaCompile) {
-    scalaCompileOptions.additionalParameters = gradle.scala.compileFlags
-}
-
-compileTestScala {
-    dependsOn ':tests:dotnet2.2:prepare'
-    dependsOn ':tests:dotnet3.0:prepare'
+task prepare(type: Delete, dependsOn: prepare_zip) {
+  delete getProject().getBuildDir().toPath().toFile()
+  followSymlinks = true
 }

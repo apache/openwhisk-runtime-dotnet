@@ -36,15 +36,15 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 docker version
 
-# Upgrade dpkg avoid problems installing dotnet 2.2
+# Upgrade dpkg avoid problems installing dotnet 3.0
 # https://github.com/travis-ci/travis-ci/issues/9361#issuecomment-408431262
 sudo apt-get install -y --force-yes -q -qq dpkg
 # Install dotnet
-wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
+wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 sudo apt-get install -y apt-transport-https
 sudo apt-get -y update -qq
-sudo apt-get install -y dotnet-sdk-2.2
+sudo apt-get install -y dotnet-sdk-3.0
 
 # Build OpenWhisk deps before we run tests
 cd $WHISKDIR

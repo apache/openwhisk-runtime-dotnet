@@ -20,6 +20,6 @@
 # .NET Core 2.2 OpenWhisk Runtime Container
 
 
-## 1.13 (next Apache release)
+## 1.13
 Changes:
 - Initial release

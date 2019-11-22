@@ -17,21 +17,9 @@
 #
 -->
 
-# Apache OpenWhisk runtimes for .NET Core
+# .NET Core 3.0 OpenWhisk Runtime Container
 
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/apache/openwhisk-runtime-dotnet.svg?branch=master)](https://travis-ci.org/apache/openwhisk-runtime-dotnet)
 
-## Changelogs
-
-- [.NET Core 2.2 CHANGELOG.md](core/dotnet2.2/CHANGELOG.md)
-- [.NET Core 3.0 CHANGELOG.md](core/dotnet3.0/CHANGELOG.md)
-
-## Quick Start Guides
-
-- [.NET Core 2.2](core/dotnet2.2/QUICKSTART.md)
-- [.NET Core 3.0](core/dotnet3.0/QUICKSTART.md)
-
-# License
-
-[Apache 2.0](LICENSE.txt)
+## 1.14 (next Apache release)
+Changes:
+- Initial release
