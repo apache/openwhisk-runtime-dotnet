@@ -1,4 +1,4 @@
-<!--
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -13,16 +13,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
--->
-<Project Sdk="Microsoft.NET.Sdk">
+ */
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
-    </PropertyGroup>
+using Newtonsoft.Json.Linq;
+using System.Runtime.Versioning;
+using System.Reflection;
 
-    <ItemGroup>
-      <ProjectReference Include="..\Apache.OpenWhisk.Runtime.Common\Apache.OpenWhisk.Runtime.Common.csproj" />
-    </ItemGroup>
-    
-</Project>
+namespace Apache.OpenWhisk.Tests.Dotnet
+{
+    public class Error
+    {
+        public JObject Main(JObject args)
+        {
+            JObject message = new JObject();
+            var framework = Assembly
+                .GetEntryAssembly()?
+                .GetCustomAttribute<TargetFrameworkAttribute>()?
+                .FrameworkName;
+
+            message.Add("error", new JValue(framework));
+            return (message);
+        }
+    }
+}

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -15,38 +15,30 @@
  * limitations under the License.
  */
 
-plugins {
-  id "net.karlmartens.dotnet" version "0.2.20"
-}
+using System;
+using Apache.OpenWhisk.Runtime.Common;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
-repositories {
-    mavenCentral()
-}
+namespace Apache.OpenWhisk.Runtime.Dotnet.Minimal
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            CreateWebHostBuilder(args).Build().Run();
+        }
+        
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.ClearProviders();
+                })
+		.SuppressStatusMessages(true)
+                .UseStartup<Startup>();
 
-dotnet {
-  configuration 'Release'
-}
-
-task prepare_distro(dependsOn: distribution) {
-  doLast {
-    copy {
-      from tarTree(resources.gzip(file('build/dist/netstandard2.0.tar.gz')))
-      into file('build/dist/out')
     }
-
-    delete file('build/dist/netstandard2.0.tar.gz')
-  }
 }
 
-task prepare_zip(type: Zip, dependsOn: prepare_distro) {
-  from file('build/dist/out')
-  include '*'
-  include '**/**'
-  archiveName 'dotnettests.zip'
-  destinationDir(file('../src/test/resources'))
-}
-
-task prepare(type: Delete, dependsOn: prepare_zip) {
-  delete getProject().getBuildDir().toPath().toFile()
-  followSymlinks = true
-}
