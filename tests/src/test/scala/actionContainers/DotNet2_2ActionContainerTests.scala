@@ -52,7 +52,7 @@ class DotNet2_2ActionContainerTests extends BasicActionRunnerTests with WskActor
   }
 
   val testEchoNoWrite = {
-    TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo::Main")
+    TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Echo::MainAsync")
   }
 
   override val testUnicode = {

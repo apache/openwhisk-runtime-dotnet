@@ -33,6 +33,7 @@ namespace Apache.OpenWhisk.Runtime.Common
         private Type Type { get; set; }
         private MethodInfo Method { get; set; }
         private ConstructorInfo Constructor { get; set; }
+        private bool AwaitableMethod { get; set; }
 
         public Init()
         {
@@ -51,7 +52,7 @@ namespace Apache.OpenWhisk.Runtime.Common
                 {
                     await httpContext.Response.WriteError("Cannot initialize the action more than once.");
                     Console.Error.WriteLine("Cannot initialize the action more than once.");
-                    return (new Run(Type, Method, Constructor));
+                    return (new Run(Type, Method, Constructor, AwaitableMethod));
                 }
 
                 string body = await new StreamReader(httpContext.Request.Body).ReadToEndAsync();
@@ -156,7 +157,9 @@ namespace Apache.OpenWhisk.Runtime.Common
 
                 await httpContext.Response.WriteResponse(200, "OK");
 
-                return (new Run(Type, Method, Constructor));
+                AwaitableMethod = (Method.ReturnType.GetMethod(nameof(Task.GetAwaiter)) != null);
+
+                return (new Run(Type, Method, Constructor, AwaitableMethod));
             }
             catch (Exception ex)
             {

@@ -17,6 +17,7 @@
 
 using System;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace Apache.OpenWhisk.Tests.Dotnet
 {
@@ -24,6 +25,12 @@ namespace Apache.OpenWhisk.Tests.Dotnet
     {
         public JObject Main(JObject args)
         {
+            return (args);
+        }
+
+        public async Task<JObject> MainAsync(JObject args)
+        {
+            await Task.Delay(10); // Just do a delay to have an async/await process occur.
             return (args);
         }
     }

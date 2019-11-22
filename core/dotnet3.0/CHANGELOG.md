@@ -23,3 +23,12 @@
 ## 1.14 (next Apache release)
 Changes:
 - Initial release
+- Support for async methods. Example:
+
+```csharp
+        public async Task<JObject> MainAsync(JObject args)
+        {
+            await Task.Delay(10); // Just do a delay to have an async/await process occur.
+            return (args);
+        }
+```
