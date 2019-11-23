@@ -31,11 +31,6 @@ export OPENWHISK_HOME=$WHISKDIR
 cd $UTILDIR
 scancode/scanCode.py --config scancode/ASF-Release.cfg $ROOTDIR
 
-# Upgrade docker version
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-docker version
-
 # Upgrade dpkg avoid problems installing dotnet 3.0
 # https://github.com/travis-ci/travis-ci/issues/9361#issuecomment-408431262
 sudo apt-get install -y --force-yes -q -qq dpkg
