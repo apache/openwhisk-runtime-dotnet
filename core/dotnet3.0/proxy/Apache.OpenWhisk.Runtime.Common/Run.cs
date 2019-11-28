@@ -29,12 +29,14 @@ namespace Apache.OpenWhisk.Runtime.Common
         private readonly Type _type;
         private readonly MethodInfo _method;
         private readonly ConstructorInfo _constructor;
+        private readonly bool _awaitableMethod;
 
-        public Run(Type type, MethodInfo method, ConstructorInfo constructor)
+        public Run(Type type, MethodInfo method, ConstructorInfo constructor, bool awaitableMethod)
         {
             _type = type;
             _method = method;
             _constructor = constructor;
+            _awaitableMethod = awaitableMethod;
         }
 
         public async Task HandleRequest(HttpContext httpContext)
@@ -79,7 +81,14 @@ namespace Apache.OpenWhisk.Runtime.Common
 
                 try
                 {
-                    JObject output = (JObject) _method.Invoke(owObject, new object[] {valObject});
+                    JObject output;
+                    
+                    if(_awaitableMethod) {
+                        output = (JObject) await (dynamic) _method.Invoke(owObject, new object[] {valObject});
+                    }
+                    else {
+                        output = (JObject) _method.Invoke(owObject, new object[] {valObject});
+                    }
 
                     if (output == null)
                     {

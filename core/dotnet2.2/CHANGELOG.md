@@ -23,3 +23,15 @@
 ## 1.13
 Changes:
 - Initial release
+
+## Release TBD
+Changes:
+- Support for async methods. Example:
+
+```csharp
+        public async Task<JObject> MainAsync(JObject args)
+        {
+            await Task.Delay(10); // Just do a delay to have an async/await process occur.
+            return (args);
+        }
+```

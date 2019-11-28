@@ -20,6 +20,15 @@
 # .NET Core 3.0 OpenWhisk Runtime Container
 
 
-## 1.14 (next Apache release)
+## Release TBD
 Changes:
 - Initial release
+- Support for async methods. Example:
+
+```csharp
+        public async Task<JObject> MainAsync(JObject args)
+        {
+            await Task.Delay(10); // Just do a delay to have an async/await process occur.
+            return (args);
+        }
+```
