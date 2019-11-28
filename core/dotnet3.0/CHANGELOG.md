@@ -20,7 +20,7 @@
 # .NET Core 3.0 OpenWhisk Runtime Container
 
 
-## 1.14 (next Apache release)
+## Release TBD
 Changes:
 - Initial release
 - Support for async methods. Example:
