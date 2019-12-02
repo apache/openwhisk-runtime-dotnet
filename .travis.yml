@@ -17,11 +17,11 @@
 
 sudo: required
 dist: xenial
-language: scala
-scala:
-   - 2.12.7
+jdk: openjdk8
+language: java
 services:
 - docker
+
 notifications:
   email: false
   webhooks:
