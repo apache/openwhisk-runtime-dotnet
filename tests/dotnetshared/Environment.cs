@@ -28,6 +28,7 @@ namespace Apache.OpenWhisk.Tests.Dotnet
             message.Add("api_key", new JValue(System.Environment.GetEnvironmentVariable("__OW_API_KEY")));
             message.Add("namespace", new JValue(System.Environment.GetEnvironmentVariable("__OW_NAMESPACE")));
             message.Add("action_name", new JValue(System.Environment.GetEnvironmentVariable("__OW_ACTION_NAME")));
+            message.Add("action_version", new JValue(System.Environment.GetEnvironmentVariable("__OW_ACTION_VERSION")));
             message.Add("activation_id", new JValue(System.Environment.GetEnvironmentVariable("__OW_ACTIVATION_ID")));
             message.Add("deadline", new JValue(System.Environment.GetEnvironmentVariable("__OW_DEADLINE")));
             return (message);
