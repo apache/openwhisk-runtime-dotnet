@@ -155,8 +155,6 @@ namespace Apache.OpenWhisk.Runtime.Common
 
                 Initialized = true;
 
-                await httpContext.Response.WriteResponse(200, "OK");
-
                 AwaitableMethod = (Method.ReturnType.GetMethod(nameof(Task.GetAwaiter)) != null);
 
                 return (new Run(Type, Method, Constructor, AwaitableMethod));
