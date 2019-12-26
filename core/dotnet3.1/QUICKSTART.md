@@ -162,7 +162,7 @@ Using gradle to run all tests
 Using gradle to run some tests
 
 ```bash
-./gradlew :tests:test --tests DotNet3_0ActionContainerTests
+./gradlew :tests:test --tests DotNet3_1ActionContainerTests
 ```
 
 Using IntelliJ:
