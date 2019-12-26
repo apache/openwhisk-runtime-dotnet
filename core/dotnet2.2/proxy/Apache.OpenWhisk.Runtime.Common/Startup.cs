@@ -43,6 +43,10 @@ namespace Apache.OpenWhisk.Runtime.Common
                     if (httpContext.Request.Path.Equals(initPath))
                     {
                         run = await init.HandleRequest(httpContext);
+
+                        if (run != null)
+                            await httpContext.Response.WriteResponse(200, "OK");
+
                         return;
                     }
 
