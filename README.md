@@ -25,12 +25,12 @@
 ## Changelogs
 
 - [.NET Core 2.2 CHANGELOG.md](core/dotnet2.2/CHANGELOG.md)
-- [.NET Core 3.0 CHANGELOG.md](core/dotnet3.0/CHANGELOG.md)
+- [.NET Core 3.1 CHANGELOG.md](core/dotnet3.1/CHANGELOG.md)
 
 ## Quick Start Guides
 
 - [.NET Core 2.2](core/dotnet2.2/QUICKSTART.md)
-- [.NET Core 3.0](core/dotnet3.0/QUICKSTART.md)
+- [.NET Core 3.1](core/dotnet3.1/QUICKSTART.md)
 
 # License
 

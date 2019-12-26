@@ -17,7 +17,7 @@
 #
 -->
 
-# Quick .NET Core 3.0 Action
+# Quick .NET Core 3.1 Action
 
 A .NET Core action is a .NET Core class library with a method called `Main` that has the exact signature as follows:
 
@@ -87,7 +87,7 @@ The value for `main` needs to be in the following format:
 To use on a deployment of OpenWhisk that contains the runtime as a kind:
 
 ```bash
-wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:3.0
+wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:3.1
 ```
 
 ## Invoke the .NET Core Action
@@ -107,19 +107,19 @@ wsk action invoke --result helloDotNet --param name World
 ## Local Development
 
 ```bash
-./gradlew core:dotnet3.0:distDocker
+./gradlew core:dotnet3.1:distDocker
 ```
 
-This will produce the image `whisk/action-dotnet-v3.0`
+This will produce the image `whisk/action-dotnet-v3.1`
 
 Build and Push image
 
 ```bash
 docker login
-./gradlew core:action-dotnet-v3.0:distDocker -PdockerImagePrefix=$prefix-user -PdockerRegistry=docker.io
+./gradlew core:action-dotnet-v3.1:distDocker -PdockerImagePrefix=$prefix-user -PdockerRegistry=docker.io
 ```
 
-Deploy OpenWhisk using ansible environment that contains the kind `dotnet:3.0`
+Deploy OpenWhisk using ansible environment that contains the kind `dotnet:3.1`
 Assuming you have OpenWhisk already deploy localy and `OPENWHISK_HOME` pointing to root directory of OpenWhisk core repository.
 
 Set `ROOTDIR` to the root directory of this repository.
@@ -175,14 +175,14 @@ Using IntelliJ:
 To use as docker action push to your own dockerhub account
 
 ```bash
-docker tag whisk/action-dotnet-v3.0 $user_prefix/action-dotnet-v3.0
-docker push $user_prefix/action-dotnet-v3.0
+docker tag whisk/action-dotnet-v3.1 $user_prefix/action-dotnet-v3.1
+docker push $user_prefix/action-dotnet-v3.1
 ```
 
 Then create the action using your the image from dockerhub
 
 ```bash
-wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --docker $user_prefix/action-dotnet-v3.0
+wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --docker $user_prefix/action-dotnet-v3.1
 ```
 
 The `$user_prefix` is usually your dockerhub user id.

@@ -41,7 +41,7 @@ task prepare_zip(type: Zip, dependsOn: prepare_distro) {
   from file('build/dist/out')
   include '*'
   include '**/**'
-  archiveName 'dotnettests3.0.zip'
+  archiveName 'dotnettests3.1.zip'
   destinationDir(file('../src/test/resources'))
 }
 

@@ -41,7 +41,7 @@ deploy:
     all_branches: true
     repo: apache/openwhisk-runtime-dotnet
 - provider: script
-  script: "./tools/travis/publish.sh openwhisk 2.2 nightly && ./tools/travis/publish.sh openwhisk 3.0 nightly"
+  script: "./tools/travis/publish.sh openwhisk 2.2 nightly && ./tools/travis/publish.sh openwhisk 3.1 nightly"
   on:
     branch: master
     repo: apache/openwhisk-runtime-dotnet

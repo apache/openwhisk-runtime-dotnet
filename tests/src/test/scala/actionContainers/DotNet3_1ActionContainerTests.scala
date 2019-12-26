@@ -26,11 +26,11 @@ import java.nio.file.Paths
 
 @RunWith(classOf[JUnitRunner])
 class DotNet3_0ActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
-  val functionb64 = ResourceHelpers.readAsBase64(Paths.get(getClass.getResource("/dotnettests3.0.zip").getPath))
+  val functionb64 = ResourceHelpers.readAsBase64(Paths.get(getClass.getResource("/dotnettests3.1.zip").getPath))
 
   // Helpers specific to java actions
   override def withActionContainer(env: Map[String, String] = Map.empty)(
-    code: ActionContainer => Unit): (String, String) = withContainer("action-dotnet-v3.0", env)(code)
+    code: ActionContainer => Unit): (String, String) = withContainer("action-dotnet-v3.1", env)(code)
 
   behavior of "dotnet action"
 
@@ -112,7 +112,7 @@ class DotNet3_0ActionContainerTests extends BasicActionRunnerTests with WskActor
       runRes shouldBe defined
 
       runRes should {
-        be(Some(JsObject("error" -> JsString(".NETCoreApp,Version=v3.0"))))
+        be(Some(JsObject("error" -> JsString(".NETCoreApp,Version=v3.1"))))
       }
     }
 
