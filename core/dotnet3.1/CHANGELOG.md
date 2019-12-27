@@ -17,10 +17,10 @@
 #
 -->
 
-# .NET Core 3.0 OpenWhisk Runtime Container
+# .NET Core 3.1 OpenWhisk Runtime Container
 
 
-## Release TBD
+## 1.14
 Changes:
 - Initial release
 - Support for async methods. Example:

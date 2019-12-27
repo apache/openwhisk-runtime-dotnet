@@ -15,6 +15,6 @@
  * limitations under the License.
  */
 
-ext.dockerImageName = 'action-dotnet-v3.0'
+ext.dockerImageName = 'action-dotnet-v3.1'
 
 apply from: '../../gradle/docker.gradle'
