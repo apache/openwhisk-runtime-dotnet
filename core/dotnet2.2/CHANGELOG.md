@@ -20,11 +20,7 @@
 # .NET Core 2.2 OpenWhisk Runtime Container
 
 
-## 1.13
-Changes:
-- Initial release
-
-## Release TBD
+## 1.14
 Changes:
 - Support for async methods. Example:
 
@@ -35,3 +31,7 @@ Changes:
             return (args);
         }
 ```
+
+## 1.13
+Changes:
+- Initial release
