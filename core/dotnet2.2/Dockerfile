@@ -29,6 +29,12 @@ WORKDIR /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal
 RUN dotnet publish -c Release -r alpine.3.9-x64 -o out
 
 FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine AS runtime
+
+# Get the latest security fixes in case the base image does not contain them already.
+RUN apk update \
+    && apk upgrade \
+    && rm -f /var/cache/apk/*
+
 WORKDIR /app
 COPY --from=build /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal/out ./
 ENV ASPNETCORE_URLS http://+:8080

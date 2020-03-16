@@ -20,6 +20,11 @@
 # .NET Core 2.2 OpenWhisk Runtime Container
 
 
+## 1.15 (next release)
+Changes:
+- Get the latest security fixes (apk upgrade) with every build.
+
+
 ## 1.14
 Changes:
 - Support for async methods. Example:
