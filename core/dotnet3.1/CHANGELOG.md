@@ -20,6 +20,11 @@
 # .NET Core 3.1 OpenWhisk Runtime Container
 
 
+## 1.15 (next release)
+Changes:
+- Get the latest security fixes (apk upgrade) with every build.
+
+
 ## 1.14
 Changes:
 - Initial release
