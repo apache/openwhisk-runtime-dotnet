@@ -23,6 +23,7 @@ import common.WskActorSystem
 import spray.json._
 import actionContainers.ActionContainer.withContainer
 import java.nio.file.Paths
+import java.lang.StringBuilder
 
 @RunWith(classOf[JUnitRunner])
 class DotNet3_1ActionContainerTests_2_2 extends BasicActionRunnerTests with WskActorSystem {
@@ -98,6 +99,19 @@ class DotNet3_1ActionContainerTests_2_2 extends BasicActionRunnerTests with WskA
       case (o, e) =>
         (o + e).toLowerCase should include("exception")
     })
+  }
+
+  it should "support a large payload" in {
+    val (out, err) = withActionContainer() { c =>
+      val sb = new StringBuilder(18000000 + functionb64.length());
+      sb.append(functionb64);
+      for (i <- 0 to 18000000) {
+        sb.append(' ');
+      }
+      val (initCode, _) =
+        c.init(initPayload(sb.toString(), "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Error::Main"))
+      initCode should be(200)
+    }
   }
 
   it should "support application errors" in {
