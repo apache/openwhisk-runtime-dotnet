@@ -100,6 +100,15 @@ class DotNet2_2ActionContainerTests extends BasicActionRunnerTests with WskActor
     })
   }
 
+  it should "support a large payload" in {
+    val (out, err) = withActionContainer() { c =>
+      val payload = functionb64 + (" " * 18000000)
+      val (initCode, _) =
+        c.init(initPayload(payload, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Error::Main"))
+      initCode should be(200)
+    }
+  }
+
   it should "support application errors" in {
     val (out, err) = withActionContainer() { c =>
       val (initCode, _) =

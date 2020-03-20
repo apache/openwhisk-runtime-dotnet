@@ -32,6 +32,10 @@ namespace Apache.OpenWhisk.Runtime.Dotnet.Minimal
         
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel(options =>
+                {
+                    options.Limits.MaxRequestBodySize = null;
+                })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.ClearProviders();
