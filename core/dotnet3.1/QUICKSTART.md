@@ -22,7 +22,9 @@
 A .NET Core action is a .NET Core class library with a method called `Main` that has the exact signature as follows:
 
 ```csharp
-public Newtonsoft.Json.Linq.JObject Main(Newtonsoft.Json.Linq.JObject);
+using Newtonsoft.Json.Linq;
+
+public static JObject Main(JObject);
 ```
 
 In order to compile, test and archive .NET Core projects, you must have the [.NET Core SDK](https://www.microsoft.com/net/download) installed locally and the environment variable `DOTNET_HOME` set to the location where the `dotnet` executable can be found.
@@ -50,7 +52,7 @@ namespace Apache.OpenWhisk.Example.Dotnet
 {
     public class Hello
     {
-        public JObject Main(JObject args)
+        public static JObject Main(JObject args)
         {
             string name = "stranger";
             if (args.ContainsKey("name")) {

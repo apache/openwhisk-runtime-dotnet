@@ -28,20 +28,18 @@ namespace Apache.OpenWhisk.Runtime.Common
     {
         private readonly Type _type;
         private readonly MethodInfo _method;
-        private readonly ConstructorInfo _constructor;
         private readonly bool _awaitableMethod;
 
-        public Run(Type type, MethodInfo method, ConstructorInfo constructor, bool awaitableMethod)
+        public Run(Type type, MethodInfo method, bool awaitableMethod)
         {
             _type = type;
             _method = method;
-            _constructor = constructor;
             _awaitableMethod = awaitableMethod;
         }
 
         public async Task HandleRequest(HttpContext httpContext)
         {
-            if (_type == null || _method == null || _constructor == null)
+            if (_type == null || _method == null)
             {
                 await httpContext.Response.WriteError("Cannot invoke an uninitialized action.");
                 return;
@@ -77,17 +75,15 @@ namespace Apache.OpenWhisk.Runtime.Common
                     }
                 }
 
-                object owObject = _constructor.Invoke(new object[] { });
-
                 try
                 {
                     JObject output;
                     
                     if(_awaitableMethod) {
-                        output = (JObject) await (dynamic) _method.Invoke(owObject, new object[] {valObject});
+                        output = (JObject) await (dynamic) _method.Invoke(null, new object[] {valObject});
                     }
                     else {
-                        output = (JObject) _method.Invoke(owObject, new object[] {valObject});
+                        output = (JObject) _method.Invoke(null, new object[] {valObject});
                     }
 
                     if (output == null)
@@ -97,7 +93,7 @@ namespace Apache.OpenWhisk.Runtime.Common
                         return;
                     }
 
-                    await httpContext.Response.WriteResponse(200, output.ToString());
+                    await httpContext.Response.WriteResponse( 200, output.ToString());
                 }
                 catch (Exception ex)
                 {
