@@ -93,7 +93,7 @@ namespace Apache.OpenWhisk.Runtime.Common
                         return;
                     }
 
-                    await httpContext.Response.WriteResponse( 200, output.ToString());
+                    await httpContext.Response.WriteResponse(200, output.ToString());
                 }
                 catch (Exception ex)
                 {
