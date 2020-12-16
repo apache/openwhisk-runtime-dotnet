@@ -20,6 +20,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 
@@ -120,6 +121,17 @@ namespace Apache.OpenWhisk.Runtime.Common
 
                 try
                 {
+                    // Export init arguments as environment variables
+                    if (message["env"] != null && message["env"].HasValues)
+                    {
+                        Dictionary<string, string> dictEnv = message["env"].ToObject<Dictionary<string, string>>();
+                        foreach (KeyValuePair<string, string> entry in dictEnv) {
+                            // See https://docs.microsoft.com/en-us/dotnet/api/system.environment.setenvironmentvariable
+                            // If entry.Value is null or the empty string, the variable is not set
+                            Environment.SetEnvironmentVariable(entry.Key, entry.Value);
+                        }
+                    }
+
                     Assembly assembly = Assembly.LoadFrom(assemblyPath);
                     Type = assembly.GetType(mainParts[1]);
                     if (Type == null)
