@@ -1,4 +1,4 @@
-<!--
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -13,21 +13,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
--->
-<Project Sdk="Microsoft.NET.Sdk">
+ */
+using Newtonsoft.Json.Linq;
 
-    <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-    </PropertyGroup>
+namespace Apache.OpenWhisk.Tests.Dotnet
+{
+    public class Init
+    {
+        public static string SOME_VAR = System.Environment.GetEnvironmentVariable("SOME_VAR");
+        public static string ANOTHER_VAR = System.Environment.GetEnvironmentVariable("ANOTHER_VAR");
 
-    <ItemGroup>
-      <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
-  
-    <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json">
-        <Version>12.0.3</Version>
-      </PackageReference>
-    </ItemGroup>
-
-</Project>
+        public JObject Main(JObject args)
+        {
+            JObject message = new JObject();
+            // an empty env variable is null, convert it to empty string to conform to test invariant
+            message.Add("SOME_VAR", new JValue(SOME_VAR != null ? SOME_VAR : ""));
+            message.Add("ANOTHER_VAR", new JValue(ANOTHER_VAR != null ? ANOTHER_VAR : ""));
+            return (message);
+        }
+    }
+}

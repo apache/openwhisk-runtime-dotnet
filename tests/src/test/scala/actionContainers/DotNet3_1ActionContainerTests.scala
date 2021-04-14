@@ -47,6 +47,10 @@ class DotNet3_1ActionContainerTests extends BasicActionRunnerTests with WskActor
     TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Environment::Main")
   }
 
+  override val testEnvParameters = {
+    TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Init::Main")
+  }
+
   override val testEcho = {
     TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.AltEcho::Main")
   }
@@ -98,6 +102,15 @@ class DotNet3_1ActionContainerTests extends BasicActionRunnerTests with WskActor
       case (o, e) =>
         (o + e).toLowerCase should include("exception")
     })
+  }
+
+  it should "support a large payload" in {
+    val (out, err) = withActionContainer() { c =>
+      val payload = functionb64 + (" " * 18000000)
+      val (initCode, _) =
+        c.init(initPayload(payload, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Error::Main"))
+      initCode should be(200)
+    }
   }
 
   it should "support application errors" in {
