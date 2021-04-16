@@ -28,7 +28,7 @@ namespace Apache.OpenWhisk.Runtime.Common
             Console.WriteLine("XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX");
             Console.Error.WriteLine("XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX");
         }
-        
+
         public void Configure(IApplicationBuilder app)
         {
             PathString initPath = new PathString("/init");
@@ -36,35 +36,34 @@ namespace Apache.OpenWhisk.Runtime.Common
             Init init = new Init();
             Run run = null;
             app.Run(async (httpContext) =>
+            {
+                if (httpContext.Request.Path.Equals(initPath))
                 {
-                    if (httpContext.Request.Path.Equals(initPath))
+                    run = await init.HandleRequest(httpContext);
+
+                    if (run != null)
+                        await httpContext.Response.WriteResponse(200, "OK");
+
+                    return;
+                }
+
+                if (httpContext.Request.Path.Equals(runPath))
+                {
+                    if (!init.Initialized)
                     {
-                        run = await init.HandleRequest(httpContext);
-
-                        if (run != null)
-                            await httpContext.Response.WriteResponse(200, "OK");
-
+                        await httpContext.Response.WriteError("Cannot invoke an uninitialized action.");
                         return;
                     }
 
-                    if (httpContext.Request.Path.Equals(runPath))
+                    if (run == null)
                     {
-                        if (!init.Initialized)
-                        {
-                            await httpContext.Response.WriteError("Cannot invoke an uninitialized action.");
-                            return;
-                        }
-
-                        if (run == null)
-                        {
-                            await httpContext.Response.WriteError("Cannot invoke an uninitialized action.");
-                            return;
-                        }
-
-                        await run.HandleRequest(httpContext);
+                        await httpContext.Response.WriteError("Cannot invoke an uninitialized action.");
+                        return;
                     }
+
+                    await run.HandleRequest(httpContext);
                 }
-            );
+            });
         }
     }
 }

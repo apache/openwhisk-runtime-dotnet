@@ -16,10 +16,12 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Apache.OpenWhisk.Runtime.Common
@@ -77,18 +79,21 @@ namespace Apache.OpenWhisk.Runtime.Common
                     }
                 }
 
-                object owObject = _constructor.Invoke(new object[] { });
+                object actionClassInstance = _constructor.Invoke(new object[] { });
 
                 try
                 {
-                    JObject output;
-                    
-                    if(_awaitableMethod) {
-                        output = (JObject) await (dynamic) _method.Invoke(owObject, new object[] {valObject});
-                    }
-                    else {
-                        output = (JObject) _method.Invoke(owObject, new object[] {valObject});
-                    }
+                    Dictionary<string, object> output;
+
+                    // if (_awaitableMethod)
+                    // {
+                    //     output = (JObject)await (dynamic)_method.Invoke(owObject, new object[] { valObject });
+                    // }
+                    // else
+                    // {
+                    var valObjectDict = valObject.ToObject<Dictionary<string, object>>();
+                    output = (Dictionary<string, object>)_method.Invoke(actionClassInstance, new object[] { valObjectDict });
+                    // }
 
                     if (output == null)
                     {
@@ -97,7 +102,10 @@ namespace Apache.OpenWhisk.Runtime.Common
                         return;
                     }
 
-                    await httpContext.Response.WriteResponse(200, output.ToString());
+                    // Convert Dictionary<string, object> back to JSON object to be returned to OpenWhisk.
+                    var outputJson = JsonConvert.SerializeObject(output, Formatting.None);
+
+                    await httpContext.Response.WriteResponse(200, outputJson);
                 }
                 catch (Exception ex)
                 {

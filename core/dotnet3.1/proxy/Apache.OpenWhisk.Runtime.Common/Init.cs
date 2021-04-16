@@ -125,7 +125,8 @@ namespace Apache.OpenWhisk.Runtime.Common
                     if (message["env"] != null && message["env"].HasValues)
                     {
                         Dictionary<string, string> dictEnv = message["env"].ToObject<Dictionary<string, string>>();
-                        foreach (KeyValuePair<string, string> entry in dictEnv) {
+                        foreach (KeyValuePair<string, string> entry in dictEnv)
+                        {
                             // See https://docs.microsoft.com/en-us/dotnet/api/system.environment.setenvironmentvariable
                             // If entry.Value is null or the empty string, the variable is not set
                             Environment.SetEnvironmentVariable(entry.Key, entry.Value);
