@@ -17,6 +17,7 @@
 
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -88,22 +89,22 @@ namespace Apache.OpenWhisk.Runtime.Common
                     return (null);
                 }
 
-                string base64Zip = message["code"].ToString();
                 string tempPath = Path.Combine(Environment.CurrentDirectory, Guid.NewGuid().ToString());
-                string tempFile = Path.GetTempFileName();
-                await File.WriteAllBytesAsync(tempFile, Convert.FromBase64String(base64Zip));
+                string base64Zip = message["code"].ToString();
                 try
                 {
-                    System.IO.Compression.ZipFile.ExtractToDirectory(tempFile, tempPath);
+                    using (MemoryStream stream = new MemoryStream(Convert.FromBase64String(base64Zip)))
+                    {
+                        using (ZipArchive archive = new ZipArchive(stream))
+                        {
+                            archive.ExtractToDirectory(tempPath);
+                        }
+                    }
                 }
                 catch (Exception)
                 {
                     await httpContext.Response.WriteError("Unable to decompress package.");
                     return (null);
-                }
-                finally
-                {
-                    File.Delete(tempFile);
                 }
 
                 Environment.CurrentDirectory = tempPath;

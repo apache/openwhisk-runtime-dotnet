@@ -19,10 +19,18 @@
 
 # Quick .NET Core 3.1 Action
 
-A .NET Core action is a .NET Core class library with a method called `Main` that has the exact signature as follows:
+A .NET Core action is a .NET Core class library with a method called `Main` or `MainAsync` that has the exact signature as follows:
+
+Synchronous:
 
 ```csharp
 public Newtonsoft.Json.Linq.JObject Main(Newtonsoft.Json.Linq.JObject);
+```
+
+Asynchronous:
+
+```csharp
+public async System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JObject> MainAsync(Newtonsoft.Json.Linq.JObject);
 ```
 
 In order to compile, test and archive .NET Core projects, you must have the [.NET Core SDK](https://www.microsoft.com/net/download) installed locally and the environment variable `DOTNET_HOME` set to the location where the `dotnet` executable can be found.
@@ -37,10 +45,12 @@ cd Apache.OpenWhisk.Example.Dotnet
 Install the [Newtonsoft.Json](https://www.newtonsoft.com/json) NuGet package as follows:
 
 ```bash
-dotnet add package Newtonsoft.Json -v 12.0.2
+dotnet add package Newtonsoft.Json -v 13.0.1
 ```
 
 Now create a file called `Hello.cs` with the following content:
+
+Synchronous example:
 
 ```csharp
 using System;
@@ -52,6 +62,32 @@ namespace Apache.OpenWhisk.Example.Dotnet
     {
         public JObject Main(JObject args)
         {
+            string name = "stranger";
+            if (args.ContainsKey("name")) {
+                name = args["name"].ToString();
+            }
+            JObject message = new JObject();
+            message.Add("greeting", new JValue($"Hello, {name}!"));
+            return (message);
+        }
+    }
+}
+```
+
+Asynchronous example:
+
+```csharp
+using System;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
+
+namespace Apache.OpenWhisk.Example.Dotnet
+{
+    public class Hello
+    {
+        public async Task<JObject> MainAsync(JObject args)
+        {
+            await Task.Delay(10); // Just do a delay to have an async/await process occur.
             string name = "stranger";
             if (args.ContainsKey("name")) {
                 name = args["name"].ToString();
@@ -79,15 +115,25 @@ zip -r -0 helloDotNet.zip *
 
 You need to specify the name of the function handler using `--main` argument.
 The value for `main` needs to be in the following format:
-`{Assembly}::{Class Full Name}::{Method}`, e.q.,
-`Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main`
+`{Assembly}::{Class Full Name}::{Method}`, e.q.:
+
++ Synchronous: `Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main`
++ Asynchronous: `Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::MainAsync`
 
 ## Create the .NET Core Action
 
 To use on a deployment of OpenWhisk that contains the runtime as a kind:
 
+Synchronous:
+
 ```bash
 wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:3.1
+```
+
+Asynchronous:
+
+```bash
+wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::MainAsync --kind dotnet:3.1
 ```
 
 ## Invoke the .NET Core Action
@@ -150,7 +196,7 @@ Install dependencies from the root directory on $OPENWHISK_HOME repository
 ```bash
 pushd $OPENWHISK_HOME
 ./gradlew install
-podd $OPENWHISK_HOME
+popd
 ```
 
 Using gradle to run all tests
