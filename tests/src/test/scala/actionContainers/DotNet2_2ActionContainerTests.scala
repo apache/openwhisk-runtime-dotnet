@@ -47,10 +47,6 @@ class DotNet2_2ActionContainerTests extends BasicActionRunnerTests with WskActor
     TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Environment::Main")
   }
 
-  override val testEnvParameters = {
-    TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.Init::Main")
-  }
-
   override val testEcho = {
     TestConfig(functionb64, main = "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.AltEcho::Main")
   }
