@@ -82,7 +82,7 @@ namespace Apache.OpenWhisk.Runtime.Common
                 try
                 {
                     JObject output;
-                    
+
                     if(_awaitableMethod) {
                         output = (JObject) await (dynamic) _method.Invoke(owObject, new object[] {valObject});
                     }
