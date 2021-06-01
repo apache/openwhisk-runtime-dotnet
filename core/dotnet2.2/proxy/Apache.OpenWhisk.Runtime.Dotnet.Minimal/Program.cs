@@ -29,7 +29,7 @@ namespace Apache.OpenWhisk.Runtime.Dotnet.Minimal
         {
             CreateWebHostBuilder(args).Build().Run();
         }
-        
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel(options =>
@@ -40,7 +40,7 @@ namespace Apache.OpenWhisk.Runtime.Dotnet.Minimal
                 {
                     logging.ClearProviders();
                 })
-		.SuppressStatusMessages(true)
+                .SuppressStatusMessages(true)
                 .UseStartup<Startup>();
 
     }
