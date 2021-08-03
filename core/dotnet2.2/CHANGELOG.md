@@ -19,6 +19,10 @@
 
 # .NET Core 2.2 OpenWhisk Runtime Container
 
+## 1.16
+- Fix Akka version ($55)
+- Init json quickstart updates (#50)
+- Export init args to environment. (#44)
 
 ## 1.15
 Changes:
