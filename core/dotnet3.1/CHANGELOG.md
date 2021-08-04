@@ -20,6 +20,12 @@
 # .NET Core 3.1 OpenWhisk Runtime Container
 
 
+## 1.16
+- Fix Akka version ($55)
+- Init json quickstart updates (#50)
+- Export init args to environment. (#44)
+- Upgrade dotnet sdk packages (removed 2.2 references) (#42)
+
 ## 1.15
 Changes:
 - Increased MaxRequestBodySize, so larger zip files can be uploaded (#33)
