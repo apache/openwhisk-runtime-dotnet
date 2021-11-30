@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -15,36 +15,23 @@
  * limitations under the License.
  */
 
-include ':tests'
-include ':tests:dotnet2.2'
-include ':tests:dotnet3.1'
-include ':tests:dotnet6.0'
+using System;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
-include ':core:dotnet2.2'
-include ':core:dotnet2.2:proxy'
+namespace Apache.OpenWhisk.Tests.Dotnet
+{
+    public class Echo
+    {
+        public JsonObject Main(JsonObject args)
+        {
+            return (args);
+        }
 
-include ':core:dotnet3.1'
-include ':core:dotnet3.1:proxy'
-
-include ':core:dotnet6.0'
-include ':core:dotnet6.0:proxy'
-
-rootProject.name = 'runtime-dotnet'
-
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
-
-gradle.ext.scala = [
-    version: '2.12.7',
-    depVersion  : '2.12',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
-
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
-
-gradle.ext.akka = [version : '2.6.12']
-gradle.ext.akka_http = [version : '10.2.4']
+        public async Task<JsonObject> MainAsync(JsonObject args)
+        {
+            await Task.Delay(10); // Just do a delay to have an async/await process occur.
+            return (args);
+        }
+    }
+}

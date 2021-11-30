@@ -51,4 +51,5 @@ tasks.withType(ScalaCompile) {
 compileTestScala {
     dependsOn ':tests:dotnet2.2:prepare'
     dependsOn ':tests:dotnet3.1:prepare'
+    dependsOn ':tests:dotnet6.0:prepare'
 }

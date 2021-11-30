@@ -14,37 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Apache.Openwhisk.Runtime.Minimal;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
-include ':tests'
-include ':tests:dotnet2.2'
-include ':tests:dotnet3.1'
-include ':tests:dotnet6.0'
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<RuntimeService>();
+var app = builder.Build();
+app.MapPost("/init", (InitPostBody? initBody, RuntimeService runtimeService) => runtimeService.Initialize(initBody));
+app.MapPost("/run", (RunPostBody? runbody, RuntimeService runtimeService) => runtimeService.RunRequest(runbody));
 
-include ':core:dotnet2.2'
-include ':core:dotnet2.2:proxy'
-
-include ':core:dotnet3.1'
-include ':core:dotnet3.1:proxy'
-
-include ':core:dotnet6.0'
-include ':core:dotnet6.0:proxy'
-
-rootProject.name = 'runtime-dotnet'
-
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
-
-gradle.ext.scala = [
-    version: '2.12.7',
-    depVersion  : '2.12',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
-
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
-
-gradle.ext.akka = [version : '2.6.12']
-gradle.ext.akka_http = [version : '10.2.4']
+app.Run("http://0.0.0.0:8080");

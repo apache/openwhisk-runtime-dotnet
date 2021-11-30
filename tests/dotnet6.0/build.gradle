@@ -15,36 +15,37 @@
  * limitations under the License.
  */
 
-include ':tests'
-include ':tests:dotnet2.2'
-include ':tests:dotnet3.1'
-include ':tests:dotnet6.0'
+plugins {
+  id "net.karlmartens.dotnet" version "0.2.20"
+}
 
-include ':core:dotnet2.2'
-include ':core:dotnet2.2:proxy'
+repositories {
+    mavenCentral()
+}
 
-include ':core:dotnet3.1'
-include ':core:dotnet3.1:proxy'
+dotnet {
+  configuration 'Release'
+}
 
-include ':core:dotnet6.0'
-include ':core:dotnet6.0:proxy'
+task prepare_distro(dependsOn: distribution) {
+  doLast {
+    copy {
+      from tarTree(resources.gzip(file('build/dist/net6.0.tar.gz')))
+      into file('build/dist/out')
+    }
+    delete file('build/dist/net6.0.tar.gz')
+  }
+}
 
-rootProject.name = 'runtime-dotnet'
+task prepare_zip(type: Zip, dependsOn: prepare_distro) {
+  from file('build/dist/out')
+  include '*'
+  include '**/**'
+  archiveName 'dotnettests6.0.zip'
+  destinationDir(file('../src/test/resources'))
+}
 
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
-
-gradle.ext.scala = [
-    version: '2.12.7',
-    depVersion  : '2.12',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
-
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
-
-gradle.ext.akka = [version : '2.6.12']
-gradle.ext.akka_http = [version : '10.2.4']
+task prepare(type: Delete, dependsOn: prepare_zip) {
+  delete getProject().getBuildDir().toPath().toFile()
+  followSymlinks = true
+}

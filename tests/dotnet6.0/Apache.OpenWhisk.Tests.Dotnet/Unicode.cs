@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -15,36 +15,20 @@
  * limitations under the License.
  */
 
-include ':tests'
-include ':tests:dotnet2.2'
-include ':tests:dotnet3.1'
-include ':tests:dotnet6.0'
+using System.Text.Json.Nodes;
 
-include ':core:dotnet2.2'
-include ':core:dotnet2.2:proxy'
-
-include ':core:dotnet3.1'
-include ':core:dotnet3.1:proxy'
-
-include ':core:dotnet6.0'
-include ':core:dotnet6.0:proxy'
-
-rootProject.name = 'runtime-dotnet'
-
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
-
-gradle.ext.scala = [
-    version: '2.12.7',
-    depVersion  : '2.12',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
-
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
-
-gradle.ext.akka = [version : '2.6.12']
-gradle.ext.akka_http = [version : '10.2.4']
+namespace Apache.OpenWhisk.Tests.Dotnet
+{
+    public class Unicode
+    {
+        public JsonObject Main(JsonObject args)
+        {
+            string delimiter = args["delimiter"].ToString();
+            JsonObject message = new JsonObject();
+            string output = $"{delimiter} ☃ {delimiter}";
+            message.Add("winter", output);
+            Console.WriteLine(output);
+            return (message);
+        }
+    }
+}
