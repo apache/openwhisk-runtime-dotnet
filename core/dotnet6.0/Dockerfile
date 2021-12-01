@@ -40,28 +40,3 @@ COPY --from=build /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal/out ./
 ENV ASPNETCORE_URLS http://+:8080
 EXPOSE 8080/tcp
 ENTRYPOINT ["dotnet", "Apache.OpenWhisk.Runtime.Dotnet.Minimal.dll"]
-#
-#FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-#WORKDIR /app
-#
-#FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-#WORKDIR /src
-#COPY proxy/Apache.OpenWhisk.Runtime.Dotnet.Minimal/*.csproj ./Apache.OpenWhisk.Runtime.Dotnet.Minimal/
-#COPY proxy/openwhisk-runtime-dotnet.sln ./openwhisk-runtime-dotnet.sln
-#RUN dotnet restore 
-#
-#
-#COPY . .
-#WORKDIR "/src/Apache.Openwhisk.Runtime.Dotnet.Minimal"
-#RUN "ls"
-#RUN dotnet build "Apache.Openwhisk.Runtime.Dotnet.Minimal.csproj" -c Release -o /app/build
-#
-#FROM build AS publish
-#RUN dotnet publish "Apache.Openwhisk.Runtime.Dotnet.Minimal.csproj" -c Release -r linux-musl-x64 -o /app/publish
-#
-#FROM base AS final
-#WORKDIR /app
-#COPY --from=publish /app/publish .
-#ENV ASPNETCORE_URLS http://+:8080
-#EXPOSE 8080/tcp
-#ENTRYPOINT ["dotnet", "Apache.Openwhisk.Runtime.Minimal.dll"]

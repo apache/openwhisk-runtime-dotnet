@@ -54,6 +54,7 @@ internal class RuntimeService
     /// <returns></returns>
     internal async Task<IResult> RunRequest(RunPostBody? runbody)
     {
+        Console.WriteLine("Attempting to run request with:" + JsonSerializer.Serialize(runbody));
 
         if (Initialized == false || FunctionToRun.Type == null || FunctionToRun.Method == null || FunctionToRun.Constructor == null)
         {
@@ -127,6 +128,7 @@ internal class RuntimeService
     /// <returns></returns>
     internal async Task<IResult> Initialize(InitPostBody? initBody)
     {
+        Console.WriteLine("Attempting to initialize request with:" + JsonSerializer.Serialize(initBody));
         await _initSemaphoreSlim.WaitAsync();
         try
         {

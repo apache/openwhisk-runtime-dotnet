@@ -25,7 +25,7 @@ import actionContainers.ActionContainer.withContainer
 import java.nio.file.Paths
 
 @RunWith(classOf[JUnitRunner])
-class DotNet3_1ActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
+class DotNet6_0ActionContainerTests extends BasicActionRunnerTests with WskActorSystem {
   val functionb64 = ResourceHelpers.readAsBase64(Paths.get(getClass.getResource("/dotnettests6.0.zip").getPath))
 
   // Helpers specific to java actions
