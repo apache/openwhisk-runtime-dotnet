@@ -40,6 +40,7 @@ sudo dpkg -i packages-microsoft-prod.deb
 sudo apt-get install -y apt-transport-https
 sudo apt-get -y update -qq
 sudo apt-get install -y dotnet-sdk-3.1
+sudo apt-get install -y dotnet-sdk-6.0
 
 # Build OpenWhisk deps before we run tests
 cd $WHISKDIR
