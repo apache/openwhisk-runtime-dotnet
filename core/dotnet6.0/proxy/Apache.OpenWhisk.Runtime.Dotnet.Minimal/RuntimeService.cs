@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 using Apache.Openwhisk.Runtime.Minimal;
+using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -61,28 +62,29 @@ internal class RuntimeService
             return LogErrorToConsoleAndReturnErrorJson("Cannot invoke an uninitalized action.");
         }
 
+        if (runbody == null)
+        {
+            return LogErrorToConsoleAndReturnErrorJson("Can not invoke with null post body");
+        }
+
         try
         {
             //the value property of the run post body is a json string of values that will become parameters for the function
-            JsonObject? valueObject = runbody?.value != null ? JsonNode.Parse(runbody.value)?.AsObject() : null;
-
-            if (runbody != null)
+            JsonObject? valueObject = string.IsNullOrEmpty(runbody?.value) ? null : JsonNode.Parse(runbody?.value)?.AsObject();
+            var runPostBodyProps = typeof(RunPostBody).GetProperties();
+            foreach (var prop in runPostBodyProps.Where(x => !x.Name.Equals("value")))
             {
-                var runPostBodyProps = typeof(RunPostBody).GetProperties();
-                foreach (var prop in runPostBodyProps.Where(x => !x.Name.Equals("value")))
+                try
                 {
-                    try
-                    {
-                        string? envValue = prop.GetValue(runbody) as string;
-                        string envKey = $"__OW_{prop.Name.ToUpperInvariant()}";
-                        Environment.SetEnvironmentVariable(prop.Name, envValue);
-                    }
-                    catch (Exception)
-                    {
-                        return LogErrorToConsoleAndReturnErrorJson($"Unable to set environment variable for the \" {prop.Name}\" token");
-                    }
-
+                    string? envValue = prop.GetValue(runbody) as string;
+                    string envKey = $"__OW_{prop.Name.ToUpperInvariant()}";
+                    Environment.SetEnvironmentVariable(prop.Name, envValue);
                 }
+                catch (Exception)
+                {
+                    return LogErrorToConsoleAndReturnErrorJson($"Unable to set environment variable for the \" {prop.Name}\" token");
+                }
+
             }
 
             object owObject = FunctionToRun.Constructor.Invoke(new object[] { });
@@ -103,7 +105,7 @@ internal class RuntimeService
                     return LogErrorToConsoleAndReturnErrorJson("The action returned null");
                 }
 
-                return Results.Ok(new { Message = "Hello World!", Runbody = JsonSerializer.Serialize(runbody) });
+                return Results.Json(output, statusCode: (int)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
@@ -227,8 +229,8 @@ internal class RuntimeService
 
             Initialized = true;
             AwaitableMethod = (Method.ReturnType.GetMethod(nameof(Task.GetAwaiter)) != null);
-
-            return Results.Ok(new { Message = "Hello World", input = JsonSerializer.Serialize(initBody) });
+            FunctionToRun = new Run(Type, Method, Constructor, AwaitableMethod);
+            return Results.Ok("OK");
         }
         catch (Exception ex)
         {
