@@ -235,4 +235,17 @@ class DotNet3_1ActionContainerTests_2_2 extends BasicActionRunnerTests with WskA
         (o + e).toLowerCase should include("the action returned null")
     })
   }
+
+  it should "support array result" in {
+    val (out, err) = withActionContainer() { c =>
+      val (initCode, _) =
+        c.init(
+          initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.HelloArray::Main"))
+      initCode should be(200)
+
+      val (runCode, runRes) = c.runForJsArray(JsObject())
+      runCode should be(200)
+      runRes shouldBe Some(JsArray(JsString("a"), JsString("b")))
+    }
+  }
 }
