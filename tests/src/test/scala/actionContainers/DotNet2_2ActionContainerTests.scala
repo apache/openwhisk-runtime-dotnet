@@ -232,14 +232,29 @@ class DotNet2_2ActionContainerTests extends BasicActionRunnerTests with WskActor
     })
   }
 
-  it should "support array result" in {
+  it should "support return array result" in {
     val (out, err) = withActionContainer() { c =>
       val (initCode, _) =
         c.init(
           initPayload(functionb64, "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.HelloArray::Main"))
       initCode should be(200)
 
-      val (runCode, runRes) = c.runForJsArray(JsObject())
+      val (runCode, runRes) = c.runForJsArray(runPayload(JsObject()))
+      runCode should be(200)
+      runRes shouldBe Some(JsArray(JsString("a"), JsString("b")))
+    }
+  }
+
+  it should "support array as input param" in {
+    val (out, err) = withActionContainer() { c =>
+      val (initCode, _) =
+        c.init(
+          initPayload(
+            functionb64,
+            "Apache.OpenWhisk.Tests.Dotnet::Apache.OpenWhisk.Tests.Dotnet.HelloPassArrayParam::Main"))
+      initCode should be(200)
+
+      val (runCode, runRes) = c.runForJsArray(runPayload(JsArray(JsString("a"), JsString("b"))))
       runCode should be(200)
       runRes shouldBe Some(JsArray(JsString("a"), JsString("b")))
     }
