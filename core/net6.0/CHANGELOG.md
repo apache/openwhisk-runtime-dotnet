@@ -17,30 +17,7 @@
 #
 -->
 
-# .NET Core 2.2 OpenWhisk Runtime Container
+# .NET 6.0 OpenWhisk Runtime Container
 
 ## 1.16
-- Fix Akka version ($55)
-- Init json quickstart updates (#50)
-- Export init args to environment. (#44)
-
-## 1.15
-Changes:
-- Increased MaxRequestBodySize, so larger zip files can be uploaded (#33)
-- Get the latest security fixes (apk upgrade) with every build.
-
-## 1.14
-Changes:
-- Support for async methods. Example:
-
-```csharp
-        public async Task<JObject> MainAsync(JObject args)
-        {
-            await Task.Delay(10); // Just do a delay to have an async/await process occur.
-            return (args);
-        }
-```
-
-## 1.13
-Changes:
 - Initial release

@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 
 WORKDIR /app
 COPY proxy/Apache.OpenWhisk.Runtime.Common/*.csproj ./Apache.OpenWhisk.Runtime.Common/
@@ -26,9 +26,9 @@ RUN dotnet restore
 COPY proxy/Apache.OpenWhisk.Runtime.Common/. ./Apache.OpenWhisk.Runtime.Common/
 COPY proxy/Apache.OpenWhisk.Runtime.Dotnet.Minimal/. ./Apache.OpenWhisk.Runtime.Dotnet.Minimal/
 WORKDIR /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal
-RUN dotnet publish -c Release -r alpine.3.9-x64 -o out
+RUN dotnet publish -c Release -r linux-musl-x64 -o out
 
-FROM mcr.microsoft.com/dotnet/core/runtime:2.2-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/core/runtime:6.0-alpine AS runtime
 
 # Get the latest security fixes in case the base image does not contain them already.
 RUN apk update \
