@@ -15,32 +15,16 @@
  * limitations under the License.
  */
 
-include ':tests'
-include ':tests:dotnet2.2'
-include ':tests:dotnet3.1'
+using System;
+using Newtonsoft.Json.Linq;
 
-include ':core:dotnet2.2'
-include ':core:dotnet2.2:proxy'
-
-include ':core:dotnet3.1'
-include ':core:dotnet3.1:proxy'
-
-rootProject.name = 'runtime-dotnet'
-
-gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
-]
-
-gradle.ext.scala = [
-    version: '2.12.7',
-    depVersion  : '2.12',
-    compileFlags: ['-feature', '-unchecked', '-deprecation', '-Xfatal-warnings', '-Ywarn-unused-import']
-]
-
-gradle.ext.scalafmt = [
-    version: '1.5.0',
-    config: new File(rootProject.projectDir, '.scalafmt.conf')
-]
-
-gradle.ext.akka = [version : '2.6.12']
-gradle.ext.akka_http = [version : '10.2.4']
+namespace Apache.OpenWhisk.Tests.Dotnet
+{
+    public class HelloPassArrayParam
+    {
+        public JArray Main(JArray args)
+        {
+            return (args);
+        }
+    }
+}

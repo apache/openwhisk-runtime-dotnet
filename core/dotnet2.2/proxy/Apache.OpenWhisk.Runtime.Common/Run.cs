@@ -54,6 +54,7 @@ namespace Apache.OpenWhisk.Runtime.Common
                 JObject inputObject = string.IsNullOrEmpty(body) ? null : JObject.Parse(body);
 
                 JObject valObject = null;
+                JArray valArray = null;
 
                 if (inputObject != null)
                 {
@@ -76,18 +77,29 @@ namespace Apache.OpenWhisk.Runtime.Common
                         }
                     }
                 }
+                if (valObject == null) {
+                    valArray = inputObject["value"] as JArray;
+                }
 
                 object owObject = _constructor.Invoke(new object[] { });
 
                 try
                 {
-                    JObject output;
-                    
+                    JContainer output;
+
                     if(_awaitableMethod) {
-                        output = (JObject) await (dynamic) _method.Invoke(owObject, new object[] {valObject});
+                        if (valObject != null) {
+                            output = (JContainer) await (dynamic) _method.Invoke(owObject, new object[] {valObject});
+                        } else {
+                            output = (JContainer) await (dynamic) _method.Invoke(owObject, new object[] {valArray});
+                        }
                     }
                     else {
-                        output = (JObject) _method.Invoke(owObject, new object[] {valObject});
+                        if (valObject != null) {
+                            output = (JContainer) _method.Invoke(owObject, new object[] {valObject});
+                        } else {
+                            output = (JContainer) _method.Invoke(owObject, new object[] {valArray});
+                        }
                     }
 
                     if (output == null)

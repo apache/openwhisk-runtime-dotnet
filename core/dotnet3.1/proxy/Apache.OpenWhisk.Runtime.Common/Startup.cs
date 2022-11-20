@@ -28,7 +28,7 @@ namespace Apache.OpenWhisk.Runtime.Common
             Console.WriteLine("XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX");
             Console.Error.WriteLine("XXX_THE_END_OF_A_WHISK_ACTIVATION_XXX");
         }
-        
+
         public void Configure(IApplicationBuilder app)
         {
             PathString initPath = new PathString("/init");
