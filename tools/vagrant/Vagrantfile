@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+$provision_script = <<-SCRIPT
+DEBIAN_FRONTEND=noninteractive
+apt update
+apt install apt-transport-https -y --no-install-recommends
+apt install curl zip unzip -y --no-install-recommends
+curl -o /tmp/packages-microsoft-prod.deb https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb
+dpkg -i /tmp/packages-microsoft-prod.deb
+rm /tmp/packages-microsoft-prod.deb
+apt update
+apt-get install -y dotnet-sdk-6.0
+
+su - vagrant -c 'curl -s "https://get.sdkman.io" | bash'
+
+su - vagrant -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install java 11.0.17-amzn'
+
+su - vagrant -c 'cd /src/openwhisk && /src/openwhisk/gradlew install'
+
+if [ ! -f "/etc/profile.d/openwhisk.sh" ] ; then
+    cat << EOF > /etc/profile.d/openwhisk.sh
+#!/bin/bash
+OPENWHISK_HOME="/src/openwhisk"
+EOF
+    chmod a+x /etc/profile.d/openwhisk.sh
+fi
+SCRIPT
+
+Vagrant.configure("2") do |config|
+    config.vm.box = "debian/bullseye64"
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.memory = 4096
+        vb.cpus = 2
+        vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    end
+
+    config.vm.provision "shell", inline: $provision_script
+
+    config.vm.provision :docker
+
+    config.vm.synced_folder "../../..", "/src"
+end
