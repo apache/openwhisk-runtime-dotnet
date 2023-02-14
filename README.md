@@ -17,7 +17,7 @@
 #
 -->
 
-# Apache OpenWhisk runtimes for .NET Core
+# Apache OpenWhisk runtimes for .NET
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Build Status](https://travis-ci.com/apache/openwhisk-runtime-dotnet.svg?branch=master)](https://travis-ci.com/github/apache/openwhisk-runtime-dotnet)
@@ -33,7 +33,7 @@ cd Apache.OpenWhisk.Example.Dotnet
 Install the [Newtonsoft.Json](https://www.newtonsoft.com/json) NuGet package as follows:
 
 ```bash
-dotnet add package Newtonsoft.Json -v 12.0.1
+dotnet add package Newtonsoft.Json -v 13.0.1
 ```
 
 Now create a file called `Hello.cs` with the following content:
@@ -75,7 +75,7 @@ zip -r -0 helloDotNet.zip *
 Create the action
 
 ```bash
-wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:2.2
+wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:6.0
 ```
 
 For the return result, not only support `dictionary` but also support `array`
@@ -123,13 +123,13 @@ namespace Apache.OpenWhisk.Tests.Dotnet
 
 ## Changelogs
 
-- [.NET Core 2.2 CHANGELOG.md](core/dotnet2.2/CHANGELOG.md)
 - [.NET Core 3.1 CHANGELOG.md](core/dotnet3.1/CHANGELOG.md)
+- [.NET 6.0 CHANGELOG.md](core/net6.0/CHANGELOG.md)
 
 ## Quick Start Guides
 
-- [.NET Core 2.2](core/dotnet2.2/QUICKSTART.md)
 - [.NET Core 3.1](core/dotnet3.1/QUICKSTART.md)
+- [.NET Core 6.0](core/net6.0/QUICKSTART.md)
 
 # License
 

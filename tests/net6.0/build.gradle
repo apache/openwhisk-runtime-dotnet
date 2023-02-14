@@ -1,4 +1,4 @@
-<!--
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -13,16 +13,39 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
--->
-<Project Sdk="Microsoft.NET.Sdk">
+ */
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
-    </PropertyGroup>
+plugins {
+  id "net.karlmartens.dotnet" version "0.2.20"
+}
 
-    <ItemGroup>
-      <ProjectReference Include="..\Apache.OpenWhisk.Runtime.Common\Apache.OpenWhisk.Runtime.Common.csproj" />
-    </ItemGroup>
-    
-</Project>
+repositories {
+    mavenCentral()
+}
+
+dotnet {
+  configuration 'Release'
+}
+
+task prepare_distro(dependsOn: distribution) {
+  doLast {
+    copy {
+      from tarTree(resources.gzip(file('build/dist/netstandard2.1.tar.gz')))
+      into file('build/dist/out')
+    }
+    delete file('build/dist/netstandard2.1.tar.gz')
+  }
+}
+
+task prepare_zip(type: Zip, dependsOn: prepare_distro) {
+  from file('build/dist/out')
+  include '*'
+  include '**/**'
+  archiveName 'nettests6.0.zip'
+  destinationDir(file('../src/test/resources'))
+}
+
+task prepare(type: Delete, dependsOn: prepare_zip) {
+  delete getProject().getBuildDir().toPath().toFile()
+  followSymlinks = true
+}
