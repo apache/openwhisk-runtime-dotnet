@@ -88,10 +88,10 @@ jobs:
         working-directory: runtime
         run: |
           SHORT_COMMIT=$(git rev-parse --short "$GITHUB_SHA")
-          ./gradlew :core:dotnet2.2:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
-          ./gradlew :core:dotnet2.2:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
           ./gradlew :core:dotnet3.1:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
           ./gradlew :core:dotnet3.1:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
+          ./gradlew :core:dotnet6.0:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
+          ./gradlew :core:dotnet6.0:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
       - name: Push Release Images
         if: ${{ env.PUSH_RELEASE == 'true' }}
         working-directory: runtime
