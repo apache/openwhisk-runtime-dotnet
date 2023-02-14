@@ -17,9 +17,9 @@
 #
 -->
 
-# Quick .NET Core 2.2 Action
+# Quick .NET 6.0 Action
 
-A .NET Core action is a .NET Core class library with a method called `Main` or `MainAsync` that has the exact signature as follows:
+A .NET action is a .NET class library with a method called `Main` or `MainAsync` that has the exact signature as follows:
 
 Synchronous:
 
@@ -33,12 +33,12 @@ Asynchronous:
 public async System.Threading.Tasks.Task<Newtonsoft.Json.Linq.JObject> MainAsync(Newtonsoft.Json.Linq.JObject);
 ```
 
-In order to compile, test and archive .NET Core projects, you must have the [.NET Core SDK](https://www.microsoft.com/net/download) installed locally and the environment variable `DOTNET_HOME` set to the location where the `dotnet` executable can be found.
+In order to compile, test and archive .NET projects, you must have the [.NET SDK](https://dotnet.microsoft.com/en-us/download) installed locally and ensure that the `dotnet` executable is included in the `PATH` environment variable.
 
 For example, create a C# project called `Apache.OpenWhisk.Example.Dotnet`:
 
 ```bash
-dotnet new classlib -n Apache.OpenWhisk.Example.Dotnet -lang C# -f netstandard2.0
+dotnet new classlib -n Apache.OpenWhisk.Example.Dotnet -lang C# -f netstandard2.1
 cd Apache.OpenWhisk.Example.Dotnet
 ```
 
@@ -127,18 +127,18 @@ To use on a deployment of OpenWhisk that contains the runtime as a kind:
 Synchronous:
 
 ```bash
-wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:2.2
+wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --kind dotnet:6.0
 ```
 
 Asynchronous:
 
 ```bash
-wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::MainAsync --kind dotnet:2.2
+wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::MainAsync --kind dotnet:6.0
 ```
 
 ## Invoke the .NET Core Action
 
-Action invocation is the same for .NET Core actions as it is for Swift and JavaScript actions:
+Action invocation is the same for .NET actions as it is for Swift and JavaScript actions:
 
 ```bash
 wsk action invoke --result helloDotNet --param name World
@@ -153,19 +153,19 @@ wsk action invoke --result helloDotNet --param name World
 ## Local Development
 
 ```bash
-./gradlew core:dotnet2.2:distDocker
+./gradlew core:dotnet3.1:distDocker
 ```
 
-This will produce the image `whisk/action-dotnet-v2.2`
+This will produce the image `whisk/action-dotnet-v6.0`
 
 Build and Push image
 
 ```bash
 docker login
-./gradlew core:action-dotnet-v2.2:distDocker -PdockerImagePrefix=$prefix-user -PdockerRegistry=docker.io
+./gradlew core:action-dotnet-v6.0:distDocker -PdockerImagePrefix=$prefix-user -PdockerRegistry=docker.io
 ```
 
-Deploy OpenWhisk using ansible environment that contains the kind `dotnet:2.2`
+Deploy OpenWhisk using ansible environment that contains the kind `dotnet:6.0`
 Assuming you have OpenWhisk already deploy locally and `OPENWHISK_HOME` pointing to root directory of OpenWhisk core repository.
 
 Set `ROOTDIR` to the root directory of this repository.
@@ -208,7 +208,7 @@ Using gradle to run all tests
 Using gradle to run some tests
 
 ```bash
-./gradlew :tests:test --tests DotNet2_2ActionContainerTests
+./gradlew :tests:test --tests Net6_0ActionContainerTests
 ```
 
 Using IntelliJ:
@@ -221,14 +221,14 @@ Using IntelliJ:
 To use as docker action push to your own dockerhub account
 
 ```bash
-docker tag whisk/action-dotnet-v2.2 $user_prefix/action-dotnet-v2.2
-docker push $user_prefix/action-dotnet-v2.2
+docker tag whisk/action-dotnet-v6.0 $user_prefix/action-dotnet-v6.0
+docker push $user_prefix/action-dotnet-v6.0
 ```
 
 Then create the action using your the image from dockerhub
 
 ```bash
-wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --docker $user_prefix/action-dotnet-v2.2
+wsk action update helloDotNet helloDotNet.zip --main Apache.OpenWhisk.Example.Dotnet::Apache.OpenWhisk.Example.Dotnet.Hello::Main --docker $user_prefix/action-dotnet-v6.0
 ```
 
 The `$user_prefix` is usually your dockerhub user id.

@@ -76,9 +76,9 @@ namespace Apache.OpenWhisk.Runtime.Common
                                 $"Unable to set environment variable for the \"{token.Path}\" token.");
                         }
                     }
-                }
-                if (valObject == null) {
-                    valArray = inputObject["value"] as JArray;
+                    if (valObject == null) {
+                        valArray = inputObject["value"] as JArray;
+                    }
                 }
 
                 object owObject = _constructor.Invoke(new object[] { });

@@ -16,14 +16,14 @@
  */
 
 include ':tests'
-include ':tests:dotnet2.2'
 include ':tests:dotnet3.1'
-
-include ':core:dotnet2.2'
-include ':core:dotnet2.2:proxy'
+include ':tests:net6.0'
 
 include ':core:dotnet3.1'
 include ':core:dotnet3.1:proxy'
+
+include ':core:net6.0'
+include ':core:net6.0:proxy'
 
 rootProject.name = 'runtime-dotnet'
 
