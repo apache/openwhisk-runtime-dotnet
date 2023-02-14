@@ -28,7 +28,7 @@ include ':core:net6.0:proxy'
 rootProject.name = 'runtime-dotnet'
 
 gradle.ext.openwhisk = [
-        version: '1.0.0-SNAPSHOT'
+        version: '1.0.1-SNAPSHOT'
 ]
 
 gradle.ext.scala = [
