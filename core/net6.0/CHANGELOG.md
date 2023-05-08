@@ -19,5 +19,5 @@
 
 # .NET 6.0 OpenWhisk Runtime Container
 
-## 1.16
+## 1.17
 - Initial release

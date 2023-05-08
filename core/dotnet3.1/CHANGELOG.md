@@ -19,6 +19,8 @@
 
 # .NET Core 3.1 OpenWhisk Runtime Container
 
+## 1.17
+-  Support array result include sequence action (#65)
 
 ## 1.16
 - Fix Akka version ($55)
