@@ -124,12 +124,10 @@ namespace Apache.OpenWhisk.Tests.Dotnet
 
 ## Changelogs
 
-- [.NET Core 3.1 CHANGELOG.md](core/dotnet3.1/CHANGELOG.md)
 - [.NET 6.0 CHANGELOG.md](core/net6.0/CHANGELOG.md)
 
 ## Quick Start Guides
 
-- [.NET Core 3.1](core/dotnet3.1/QUICKSTART.md)
 - [.NET Core 6.0](core/net6.0/QUICKSTART.md)
 
 # License

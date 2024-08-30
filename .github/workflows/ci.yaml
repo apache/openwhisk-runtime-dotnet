@@ -88,8 +88,6 @@ jobs:
         working-directory: runtime
         run: |
           SHORT_COMMIT=$(git rev-parse --short "$GITHUB_SHA")
-          ./gradlew :core:dotnet3.1:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
-          ./gradlew :core:dotnet3.1:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
           ./gradlew :core:net6.0:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
           ./gradlew :core:net6.0:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
       - name: Push Release Images
@@ -98,9 +96,7 @@ jobs:
         run: |
           RUNTIME_VERSION=${GITHUB_REF_NAME%@*}
           IMAGE_TAG=${GITHUB_REF_NAME##*@}
-          if [ ${RUNTIME_VERSION} == "3.1" ]; then
-            RUNTIME="dotnet3.1"
-          elif [ ${RUNTIME_VERSION} == "6.0" ]; then
+          if [ ${RUNTIME_VERSION} == "6.0" ]; then
             RUNTIME="net6.0"
           fi
           ./gradlew :core:$RUNTIME:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$IMAGE_TAG

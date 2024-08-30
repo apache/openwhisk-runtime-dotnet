@@ -16,11 +16,7 @@
  */
 
 include ':tests'
-include ':tests:dotnet3.1'
 include ':tests:net6.0'
-
-include ':core:dotnet3.1'
-include ':core:dotnet3.1:proxy'
 
 include ':core:net6.0'
 include ':core:net6.0:proxy'
