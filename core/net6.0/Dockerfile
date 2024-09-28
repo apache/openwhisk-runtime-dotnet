@@ -28,7 +28,7 @@ COPY proxy/Apache.OpenWhisk.Runtime.Dotnet.Minimal/. ./Apache.OpenWhisk.Runtime.
 WORKDIR /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS runtime
 
 # Get the latest security fixes in case the base image does not contain them already.
 RUN apk update \
