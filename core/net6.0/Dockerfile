@@ -26,9 +26,9 @@ RUN dotnet restore
 COPY proxy/Apache.OpenWhisk.Runtime.Common/. ./Apache.OpenWhisk.Runtime.Common/
 COPY proxy/Apache.OpenWhisk.Runtime.Dotnet.Minimal/. ./Apache.OpenWhisk.Runtime.Dotnet.Minimal/
 WORKDIR /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal
-RUN dotnet publish -c Release -r linux-musl-x64 -o out
+RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/runtime:6.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS runtime
 
 # Get the latest security fixes in case the base image does not contain them already.
 RUN apk update \
@@ -37,6 +37,6 @@ RUN apk update \
 
 WORKDIR /app
 COPY --from=build /app/Apache.OpenWhisk.Runtime.Dotnet.Minimal/out ./
-ENV ASPNETCORE_URLS http://+:8080
+ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080/tcp
 ENTRYPOINT ["dotnet", "Apache.OpenWhisk.Runtime.Dotnet.Minimal.dll"]
