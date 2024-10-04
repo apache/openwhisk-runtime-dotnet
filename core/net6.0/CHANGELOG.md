@@ -19,5 +19,9 @@
 
 # .NET 6.0 OpenWhisk Runtime Container
 
-## 1.16
+## 1.18
+- Upgrade gradle to 6.9.3 (#85)
+- Drop support for dotnet3.1 (EOL) (#83)
+
+## 1.17
 - Initial release

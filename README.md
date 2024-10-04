@@ -20,7 +20,8 @@
 # Apache OpenWhisk runtimes for .NET
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.com/apache/openwhisk-runtime-dotnet.svg?branch=master)](https://travis-ci.com/github/apache/openwhisk-runtime-dotnet)
+[![Continuous Integration](https://github.com/apache/openwhisk-runtime-dotnet/actions/workflows/ci.yaml/badge.svg)](https://github.com/apache/openwhisk-runtime-dotnet/actions/workflows/ci.yaml)
+
 ## Give it a try today
 
 Create a C# project called Apache.OpenWhisk.Example.Dotnet:
@@ -123,12 +124,10 @@ namespace Apache.OpenWhisk.Tests.Dotnet
 
 ## Changelogs
 
-- [.NET Core 3.1 CHANGELOG.md](core/dotnet3.1/CHANGELOG.md)
 - [.NET 6.0 CHANGELOG.md](core/net6.0/CHANGELOG.md)
 
 ## Quick Start Guides
 
-- [.NET Core 3.1](core/dotnet3.1/QUICKSTART.md)
 - [.NET Core 6.0](core/net6.0/QUICKSTART.md)
 
 # License

@@ -39,7 +39,7 @@ jobs:
     steps:
       # Checkout just this repo and run scanCode before we do anything else
       - name: Checkout runtime repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: runtime
       - name: Scan Code
@@ -47,12 +47,12 @@ jobs:
 
       # Install core OpenWhisk artifacts needed to build/test anything else
       - name: Checkout OpenWhisk core repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: apache/openwhisk
           path: core
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '11'
@@ -79,7 +79,7 @@ jobs:
       # Important: naming convention for release tags is runtime@version
       - name: Docker Login
         if: ${{ env.PUSH_NIGHTLY  == 'true' || env.PUSH_RELEASE == 'true' }}
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USER_OPENWHISK }}
           password: ${{ secrets.DOCKERHUB_TOKEN_OPENWHISK }}
@@ -88,14 +88,15 @@ jobs:
         working-directory: runtime
         run: |
           SHORT_COMMIT=$(git rev-parse --short "$GITHUB_SHA")
-          ./gradlew :core:dotnet2.2:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
-          ./gradlew :core:dotnet2.2:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
-          ./gradlew :core:dotnet3.1:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
-          ./gradlew :core:dotnet3.1:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
+          ./gradlew :core:net6.0:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=nightly
+          ./gradlew :core:net6.0:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$SHORT_COMMIT
       - name: Push Release Images
         if: ${{ env.PUSH_RELEASE == 'true' }}
         working-directory: runtime
         run: |
-          RUNTIME=${GITHUB_REF_NAME%@*}
+          RUNTIME_VERSION=${GITHUB_REF_NAME%@*}
           IMAGE_TAG=${GITHUB_REF_NAME##*@}
-          ./gradlew :core:dotnet$RUNTIME:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$IMAGE_TAG
+          if [ ${RUNTIME_VERSION} == "6.0" ]; then
+            RUNTIME="net6.0"
+          fi
+          ./gradlew :core:$RUNTIME:distDocker -PdockerRegistry=docker.io -PdockerImagePrefix=openwhisk -PdockerImageTag=$IMAGE_TAG
