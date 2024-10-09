@@ -45,8 +45,16 @@ ext {
     dockerTimeout = project.hasProperty('dockerTimeout') ? dockerTimeout.toInteger() : 840
     dockerRetries = project.hasProperty('dockerRetries') ? dockerRetries.toInteger() : 3
     dockerBinary = project.hasProperty('dockerBinary') ? [dockerBinary] : ['docker']
-    dockerBuildArg = ['build']
+    dockerBuildArg = ['buildx', 'build', '--platform']
 }
+
+def dockerArchitecture = System.getProperty("os.arch")
+def dockerArchitectureMapping = [amd64:"linux/amd64", aarch64:"linux/arm64"]
+def dockerPrimaryArchitecture = dockerArchitectureMapping[dockerArchitecture]
+def dockerAllArchitectures = []
+
+dockerArchitectureMapping.each() { k, v -> dockerAllArchitectures << v }
+
 ext.dockerTaggedImageName = dockerRegistry + dockerImagePrefix + '/' + dockerImageName + ':' + dockerImageTag
 
 if(project.hasProperty('dockerHost')) {
@@ -62,7 +70,7 @@ if(project.hasProperty('dockerBuildArgs')) {
 task distDocker {
     doLast {
         def start = new Date()
-        def cmd = dockerBinary + dockerBuildArg + ['-t', dockerImageName, project.buildscript.sourceFile.getParentFile().getAbsolutePath()]
+        def cmd = dockerBinary + dockerBuildArg + dockerPrimaryArchitecture + ['--load', '-t', dockerTaggedImageName, project.buildscript.sourceFile.getParentFile().getAbsolutePath()]
         retry(cmd, dockerRetries, dockerTimeout)
         println("Building '${dockerImageName}' took ${TimeCategory.minus(new Date(), start)}")
     }
@@ -79,13 +87,15 @@ task tagImage {
         if(major == 1 && minor < 12) {
             dockerCmd += ['-f']
         }
-        retry(dockerBinary + dockerCmd + [dockerImageName, dockerTaggedImageName], dockerRetries, dockerTimeout)
+        retry(dockerBinary + dockerCmd + [dockerTaggedImageName, dockerImageName], dockerRetries, dockerTimeout)
     }
 }
 
 task pushImage {
     doLast {
-        def cmd = dockerBinary + ['push', dockerTaggedImageName]
+        def output = (dockerRegistry == '') ? '--load' : '--push'
+        def architectures = (dockerRegistry == '') ? dockerPrimaryArchitecture : dockerAllArchitectures.join(",")
+        def cmd = dockerBinary + dockerBuildArg + architectures + [output, '-t', dockerTaggedImageName, project.buildscript.sourceFile.getParentFile().getAbsolutePath()]
         retry(cmd, dockerRetries, dockerTimeout)
     }
 }

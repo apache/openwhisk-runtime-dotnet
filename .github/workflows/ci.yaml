@@ -66,6 +66,7 @@ jobs:
       - name: Build Runtime
         working-directory: runtime
         run: |
+          docker buildx create --use
           ./gradlew distDocker
 
       # Test this repository
