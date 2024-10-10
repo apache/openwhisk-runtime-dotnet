@@ -27,15 +27,14 @@ namespace Apache.OpenWhisk.Runtime.Common
     {
         public static async Task WriteResponse(this HttpResponse response, int code, string content)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(content);
-            response.ContentLength = bytes.Length;
+            response.ContentLength = Encoding.UTF8.GetByteCount(content);
             response.StatusCode = code;
             await response.WriteAsync(content);
         }
 
         public static async Task WriteError(this HttpResponse response, string errorMessage)
         {
-            JObject message = new JObject {{"error", new JValue(errorMessage)}};
+            JObject message = new() {{"error", new JValue(errorMessage)}};
             await WriteResponse(response, 502, JsonConvert.SerializeObject(message));
         }
 

@@ -31,10 +31,10 @@ namespace Apache.OpenWhisk.Runtime.Common
 
         public void Configure(IApplicationBuilder app)
         {
-            PathString initPath = new PathString("/init");
-            PathString runPath = new PathString("/run");
-            Init init = new Init();
-            Run run = null;
+            PathString initPath = new("/init");
+            PathString runPath = new("/run");
+            Init init = new();
+            Run? run = null;
             app.Run(async (httpContext) =>
                 {
                     if (httpContext.Request.Path.Equals(initPath))
