@@ -17,9 +17,13 @@
 
 include ':tests'
 include ':tests:net6.0'
+include ':tests:net8.0'
 
 include ':core:net6.0'
 include ':core:net6.0:proxy'
+
+include ':core:net8.0'
+include ':core:net8.0:proxy'
 
 rootProject.name = 'runtime-dotnet'
 
