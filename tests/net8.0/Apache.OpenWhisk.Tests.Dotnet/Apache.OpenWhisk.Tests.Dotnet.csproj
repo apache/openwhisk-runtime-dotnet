@@ -1,4 +1,4 @@
-/*
+<!--
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -13,16 +13,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+-->
+<Project Sdk="Microsoft.NET.Sdk">
 
-plugins {
-  id "net.karlmartens.dotnet" version "0.2.21"
-}
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
 
-repositories {
-    mavenCentral()
-}
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
 
-dotnet {
-  configuration 'Release'
-}
+    <ItemGroup>
+      <Compile Include="..\..\dotnetshared\*.cs">
+      </Compile>
+    </ItemGroup>
+    
+</Project>

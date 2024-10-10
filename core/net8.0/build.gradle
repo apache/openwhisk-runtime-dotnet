@@ -15,14 +15,6 @@
  * limitations under the License.
  */
 
-plugins {
-  id "net.karlmartens.dotnet" version "0.2.21"
-}
+ext.dockerImageName = 'action-dotnet-v8.0'
 
-repositories {
-    mavenCentral()
-}
-
-dotnet {
-  configuration 'Release'
-}
+apply from: '../../gradle/docker.gradle'
